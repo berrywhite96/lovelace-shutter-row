@@ -1,0 +1,62 @@
+{
+  "name": "@berrywhite/lovelace-shutter-row",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Home Assistant Lovelace Shutter Row Card",
+  "main": "shutter-row.js",
+  "module": "shutter-row.js",
+  "type": "module",
+  "scripts": {
+    "start": "rollup -c --watch",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write .",
+    "build": "rollup -c",
+    "test": "npm run lint && npm run build"
+  },
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "hass",
+    "automation",
+    "lovelace",
+    "custom-cards",
+    "shutter",
+    "row"
+  ],
+  "author": "berrywhite",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "custom-card-helpers": "^1.9.0",
+    "lit": "^2.3.0",
+    "postcss-preset-env": "^7.7.2",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-postcss-lit": "^2.0.0",
+    "rollup-plugin-serve": "^2.0.1"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^4.0.0",
+    "@babel/eslint-parser": "^7.17.0",
+    "@custom-elements-manifest/analyzer": "^0.6.3",
+    "@open-wc/testing": "^3.1.5",
+    "@rollup/plugin-commonjs": "^22.0.2",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@web/dev-server": "^0.1.31",
+    "@web/dev-server-legacy": "^1.0.0",
+    "@web/test-runner": "^0.13.27",
+    "@web/test-runner-playwright": "^0.8.8",
+    "@webcomponents/webcomponentsjs": "^2.6.0",
+    "eslint": "^8.15.0",
+    "lit-analyzer": "^0.0.6",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.77.3",
+    "rollup-plugin-summary": "^1.4.3",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "customElements": "custom-elements.json"
+}
