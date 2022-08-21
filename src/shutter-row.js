@@ -2,10 +2,9 @@ import { LitElement, html } from 'lit';
 import { fireEvent } from 'custom-card-helpers';
 import style from './style.css';
 
-let PACKAGE_JSON = require('./package.json');
 let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = PACKAGE_JSON.version;
+let VERSION = "0.1.1"
 
 
 class ShutterRow extends LitElement {

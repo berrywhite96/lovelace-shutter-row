@@ -201,10 +201,9 @@ div.card-second-row div.infos {
 }`;
 styleInject(css_248z);
 
-let PACKAGE_JSON = require('./package.json');
 let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = PACKAGE_JSON.version;
+let VERSION = "0.1.1";
 
 
 class ShutterRow extends s {
