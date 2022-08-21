@@ -1,0 +1,48 @@
+.disabled,
+div.controls[state="unavailable"] ha-icon  {
+    color: var(--disabled-text-color);
+    cursor: default;
+}
+.ghost {
+    display: none !important;
+}
+ha-card {
+    padding: 16px;
+}
+ha-icon[disabled] {
+    color: var(--disabled-text-color);
+    cursor: default;
+}
+div.card-row {
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+div.card-first-row ha-icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}
+div.entity-icon ha-icon {
+    color: var(--paper-item-icon-color, #44739e);
+}
+div.card-first-row span.entity-name {
+    margin-left: 16px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+div.card-first-row div.controls {
+    margin-left: auto;
+}
+div.card-second-row ha-slider {
+    width: 100%;
+    padding-left: 40px;
+    box-sizing: border-box;
+}
+div.card-second-row div.infos {
+    width: 175px;
+    text-align: right;
+}
