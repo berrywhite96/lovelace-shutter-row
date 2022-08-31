@@ -8,21 +8,22 @@ Simple shutter card for Home Assistant Lovelace
 
 ### HACS
 This lovelace card is available on the [HACS](https://hacs.xyz/) (Home Assistant Community Store).
+
 Go to the `Frontend` section and search for `Shutter Row`.
 
 ### Manual
-1. Download `shutter-card.js` file from the [latest-release].
-2. Put `shutter-card.js` file into your `config/www` folder.
-3. Add reference to `shutter-card.js` in Lovelace. There's two way to do that:
-   1. ~~**Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources Tab_ → Click Plus button → Set _Url_ as `/local/shutter-card.js` → Set _Resource type_ as `JavaScript Module`.
+1. Download `shutter-row.js` file from the [latest-release].
+2. Put `shutter-row.js` file into your `config/www` folder.
+3. Add reference to `shutter-row.js` in Lovelace. There's two way to do that:
+   1. ~~**Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources Tab_ → Click Plus button → Set _Url_ as `/local/shutter-row.js` → Set _Resource type_ as `JavaScript Module`.
       **Note:** If you do not see the Resources Tab, you will need to enable _Advanced Mode_ in your _User Profile_~~
    2. **Using YAML:** Add following code to `lovelace` section.
       ```yaml
       resources:
-        - url: /local/shutter-card.js
+        - url: /local/shutter-row.js
           type: module
       ```
-4. Add `custom:shutter-card` to Lovelace UI as any other card (using either editor or YAML configuration).
+4. Add `custom:shutter-row` to Lovelace UI as any other card (using either editor or YAML configuration).
 
 ## Usage
 
