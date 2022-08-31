@@ -1,4 +1,6 @@
 {
-    "name": "shutter-row",
-    "render_readme": true
+    "name": "Shutter Row",
+    "render_readme": true,
+    "filename": "shutter-row.js",
+    "content_in_root": true
 }

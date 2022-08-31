@@ -11,7 +11,7 @@ import serve from 'rollup-plugin-serve';
 const IS_DEV = process.env.ROLLUP_WATCH;
 
 const serverOptions = {
-  contentBase: ['./dist'],
+  contentBase: ['.'],
   host: 'localhost',
   port: 5000,
   allowCrossOrigin: true,
@@ -23,7 +23,7 @@ const serverOptions = {
 export default {
   input: 'src/shutter-row.js',
   output: {
-    dir: 'dist',
+    dir: '.',
     format: 'es',
   },
   plugins: [

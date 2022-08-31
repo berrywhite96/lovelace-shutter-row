@@ -6,6 +6,10 @@ Simple shutter card for Home Assistant Lovelace
 
 ## Install
 
+### HACS
+This lovelace card is available on the [HACS](https://hacs.xyz/) (Home Assistant Community Store).
+Go to the `Frontend` section and search for `Shutter Row`.
+
 ### Manual
 1. Download `shutter-card.js` file from the [latest-release].
 2. Put `shutter-card.js` file into your `config/www` folder.
