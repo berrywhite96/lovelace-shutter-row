@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { fireEvent } from 'custom-card-helpers';
 import style from './style.css';
 
-let HASSIO_CARD_ID = "shutter-row";
+let HASSIO_CARD_ID = "shutter-row-dev";
 let HASSIO_CARD_NAME = "Shutter row";
 let VERSION = "0.1.1"
 
@@ -36,6 +36,8 @@ class ShutterRow extends LitElement {
             entity: config.entity,
             name: getConfigAttribute("name", false),
             invert_position: getConfigAttribute("invert_position", false),
+            invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
+            state_color: getConfigAttribute("state_color", false),
         }
         this.entityId = this.config.entity;
     }
@@ -47,36 +49,25 @@ class ShutterRow extends LitElement {
     static get styles() {
         return style;
     }
-    // Returns complete user config
-    getConfig() {
-        let getConfigAttribute = (attribute, defaultValue) => {
-            return attribute in this._config ? this._config[attribute] : defaultValue;
-        }
-        return {
-            type: getConfigAttribute("type", false),
-            entity: getConfigAttribute("entity", false),
-            name: getConfigAttribute("name", false),
-            invert_position: getConfigAttribute("invert_position", false),
-            state_color: getConfigAttribute("state_color", false)
-        };
-    }
     // Get entity name
     getName() {
-        if(this.getConfig().name)
-            return this.getConfig().name;
+        if(this.config.name)
+            return this.config.name;
         return this.state.attributes.friendly_name;
     }
     // Get position value
     getPosition() {
+        if(this.config.invert_position)
+            return (100 - this.state.attributes.current_position);
         return this.state.attributes.current_position;
     }
-    // Get position label
-    getPositionDisplay() {
-        if( (this.getConfig().invert_position && this.getPosition() == 100) ||
-                (!this.getConfig().invert_position && this.getPosition() == 0) )
+    // Get position text for label
+    getPositionLabel() {
+        if( (this.config.invert_position_label && this.getPosition() == 100) ||
+                (!this.config.invert_position_label && this.getPosition() == 0) )
             return this.hass.localize("component.cover.state._.closed");
-        if( (this.config.invert_position && this.getPosition() == 0) ||
-                (!this.getConfig().invert_position && this.getPosition() == 100) )
+        if( (this.config.invert_position_label && this.getPosition() == 0) ||
+                (!this.config.invert_position_label && this.getPosition() == 100) )
             return this.hass.localize("component.cover.state._.open");
         return `${this.getPosition()} %`;
     }
@@ -89,14 +80,14 @@ class ShutterRow extends LitElement {
         this.stateDisplay = this.state ? this.state.state : 'unavailable';
     }
     upReached() {
-        if(!this.getConfig().invert_position && this.getPosition() == 100 ||
-        this.getConfig().invert_position && this.getPosition() == 0)
+        if(!this.config.invert_position_label && this.getPosition() == 100 ||
+        this.config.invert_position_label && this.getPosition() == 0)
                 return true;
         return false;
     }
     downReached() {
-        if(this.getConfig().invert_position && this.getPosition() == 100 ||
-            !this.getConfig().invert_position && this.getPosition() == 0)
+        if(this.config.invert_position_label && this.getPosition() == 100 ||
+            !this.config.invert_position_label && this.getPosition() == 0)
                 return true;
         return false;
     }
@@ -114,7 +105,7 @@ class ShutterRow extends LitElement {
             else
                 icon = "mdi:window-shutter-open";
         }
-        return html`<ha-icon icon="${icon}" class="${this.getConfig().state_color != undefined && this.getConfig().state_color ? "active-icon" : ""}"></ha-icon>`;
+        return html`<ha-icon icon="${icon}" class="${this.config.state_color != undefined && this.config.state_color ? "active-icon" : ""}"></ha-icon>`;
     }
     // Render lovelace card
     render() {
@@ -129,15 +120,15 @@ class ShutterRow extends LitElement {
                     
                     <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                     <div class="controls" state="${this.stateDisplay}">
-                        <ha-icon icon="mdi:chevron-up" class="${this.upReached() || this.state.attributes.moving == "UP" ? "disabled" : ''}" @click="${this.onUpClick}"></ha-icon>
-                        <ha-icon icon="mdi:stop" class="${this.state.attributes.moving == "STOP" ? "disabled" : ''}" @click="${this.onStopClick}"></ha-icon>
-                        <ha-icon icon="mdi:chevron-down" class="${this.downReached() || this.state.attributes.moving == "DOWN" ? "disabled" : ''}" @click="${this.onDownClick}"></ha-icon>
+                        <ha-icon icon="mdi:chevron-up" class="${this.upReached() || this.stateDisplay == "opening" ? "disabled" : ''}" @click="${this.onUpClick}"></ha-icon>
+                        <ha-icon icon="mdi:stop" class="${(this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @click="${this.onStopClick}"></ha-icon>
+                        <ha-icon icon="mdi:chevron-down" class="${this.downReached() || this.stateDisplay == "closing" ? "disabled" : ''}" @click="${this.onDownClick}"></ha-icon>
                     </div>
                 </div>
                 <div class="card-row card-second-row">
                     <ha-slider ignore-bar-touch="" min="0" max="100" value=${this.getPosition()} step="5" pin dir="ltr" role="slider" @change="${this.onSliderChange}"></ha-slider>
                     <div class="infos">
-                        <span class="position">${this.getPositionDisplay()}</span>
+                        <span class="position">${this.getPositionLabel()}</span>
                     </div>
                 </div>
             </ha-card>
@@ -157,7 +148,7 @@ class ShutterRow extends LitElement {
     // On move up button click
     onUpClick() {
         let elements = this._getElements();
-        if(this.state.attributes.moving == "UP" || elements.controls.hasAttribute("up-reached"))
+        if(this.stateDisplay == "opening" || elements.controls.hasAttribute("up-reached"))
             return;
         this.hass.callService("cover", "open_cover", {
             entity_id: this.entityId,
@@ -166,7 +157,7 @@ class ShutterRow extends LitElement {
     // On move down button click
     onDownClick() {
         let elements = this._getElements();
-        if(this.state.attributes.moving == "DOWN" || elements.controls.hasAttribute("down-reached"))
+        if(this.stateDisplay == "closing" || elements.controls.hasAttribute("down-reached"))
             return;
         this.hass.callService("cover", "close_cover", {
             entity_id: this.entityId,
@@ -174,7 +165,7 @@ class ShutterRow extends LitElement {
     }
     // On stop button click
     onStopClick() {
-        if(this.state.attributes.moving == "STOP")
+        if(this.stateDisplay == "open" || this.stateDisplay == "closed")
             return;
         this.hass.callService("cover", "stop_cover", {
             entity_id: this.entityId,
@@ -183,16 +174,17 @@ class ShutterRow extends LitElement {
     // On position input change
     onSliderChange() {
         let elements = this._getElements();
-        if(elements.slider.value == this.getPosition())
+        let value = parseInt(elements.slider.value);
+        if(value == this.getPosition())
             return;
         this.hass.callService("cover", "set_cover_position", {
             entity_id: this.entityId,
-            position: parseInt(elements.slider.value),
+            position: this.config.invert_position ? (100 - value) : value,
         });
     }
     // Open HA more info
     moreInfo() {
-        let entityId = this.getConfig().entity;
+        let entityId = this.config.entity;
         fireEvent(this, 'hass-more-info', {
             entityId,
         }, {
