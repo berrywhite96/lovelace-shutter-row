@@ -202,7 +202,7 @@ div.card-second-row div.infos {
 }`;
 styleInject(css_248z);
 
-let HASSIO_CARD_ID = "shutter-row-dev";
+let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
 let VERSION = "0.1.1";
 

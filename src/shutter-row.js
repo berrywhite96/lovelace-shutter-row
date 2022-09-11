@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { fireEvent } from 'custom-card-helpers';
 import style from './style.css';
 
-let HASSIO_CARD_ID = "shutter-row-dev";
+let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
 let VERSION = "0.1.1"
 
