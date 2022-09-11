@@ -3,15 +3,15 @@ div.controls[state="unavailable"] ha-icon  {
     color: var(--disabled-text-color);
     cursor: default;
 }
-.ghost {
-    display: none !important;
-}
 ha-card {
     padding: 16px;
 }
 ha-icon[disabled] {
     color: var(--disabled-text-color);
     cursor: default;
+}
+ha-icon.active-icon {
+    color: var(--paper-item-icon-active-color, #fdd835) !important;
 }
 div.card-row {
     display: flex;
