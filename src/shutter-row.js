@@ -105,7 +105,7 @@ class ShutterRow extends LitElement {
             else
                 icon = "mdi:window-shutter-open";
         }
-        return html`<ha-icon icon="${icon}" class="${this.config.state_color != undefined && this.config.state_color ? "active-icon" : ""}"></ha-icon>`;
+        return html`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
     }
     // Render lovelace card
     render() {

@@ -305,7 +305,7 @@ class ShutterRow extends s {
             else
                 icon = "mdi:window-shutter-open";
         }
-        return y`<ha-icon icon="${icon}" class="${this.config.state_color != undefined && this.config.state_color ? "active-icon" : ""}"></ha-icon>`;
+        return y`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
     }
     // Render lovelace card
     render() {
