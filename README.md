@@ -1,6 +1,6 @@
 # Shutter Row Card
 
-Simple shutter card for Home Assistant Lovelace
+Simple shutter card for Home Assistant
 
 <img width="600" alt="Shutter row example" src="https://user-images.githubusercontent.com/24818127/184556542-2ab3696a-e037-436e-b83a-fe0d3102e2cf.png">
 
