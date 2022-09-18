@@ -1,6 +1,14 @@
-import { LitElement, html } from 'lit';
-import { fireEvent } from 'custom-card-helpers';
-import style from './style.css';
+import { LitElement, html } from "lit";
+import {
+    fireEvent,
+    handleClick,
+} from "custom-card-helpers";
+
+import {
+    onHoldPointerDown,
+    onPointerUp,
+} from "./helpers.js"
+import style from "./style.css";
 
 let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
@@ -23,8 +31,10 @@ class ShutterRow extends LitElement {
     }
     // On user config update
     setConfig(config) {
-        let getConfigAttribute = (attribute, defaultValue) => {
-            return attribute in this._config ? this._config[attribute] : defaultValue;
+        let getConfigAttribute = (attribute, defaultValue, array=this._config) => {
+            if(!array)
+                return;
+            return attribute in array ? array[attribute] : defaultValue;
         }
         if (!config.entity) {
             throw new Error('You need to define an entity');
@@ -38,8 +48,35 @@ class ShutterRow extends LitElement {
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
             state_color: getConfigAttribute("state_color", false),
+            move_down_button: {
+                tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
+                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_down_button", false)),
+                hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_down_button", false)),
+            },
+            move_stop_button: {
+                tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_stop_button", false)),
+                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_stop_button", false)),
+                hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_stop_button", false)),
+            },
+            move_up_button: {
+                tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_up_button", false)),
+                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_up_button", false)),
+                hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_up_button", false)),
+            },
         }
         this.entityId = this.config.entity;
+    }
+    // Calls custom action if defined
+    callCustomAction(config, action) {
+        // Check if defined
+        if(!config[action])
+            return;
+        // Run custom action
+        switch(action) {
+            case "tap_action": handleClick(this, this.hass, config, false, false); break;
+            case "double_tap_action": handleClick(this, this.hass, config, false, true); break;
+            case "hold_action": handleClick(this, this.hass, config, true, false); break;
+        }
     }
 
     /*
@@ -79,12 +116,14 @@ class ShutterRow extends LitElement {
         this.state = this.hass.states[this.entityId];
         this.stateDisplay = this.state ? this.state.state : 'unavailable';
     }
+    // Checks if cover is fully opened
     upReached() {
         if(!this.config.invert_position_label && this.getPosition() == 100 ||
         this.config.invert_position_label && this.getPosition() == 0)
                 return true;
         return false;
     }
+    // Checks if cover is fully closed
     downReached() {
         if(this.config.invert_position_label && this.getPosition() == 100 ||
             !this.config.invert_position_label && this.getPosition() == 0)
@@ -120,9 +159,9 @@ class ShutterRow extends LitElement {
                     
                     <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                     <div class="controls" state="${this.stateDisplay}">
-                        <ha-icon icon="mdi:chevron-up" class="${this.upReached() || this.stateDisplay == "opening" ? "disabled" : ''}" @click="${this.onUpClick}"></ha-icon>
-                        <ha-icon icon="mdi:stop" class="${(this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @click="${this.onStopClick}"></ha-icon>
-                        <ha-icon icon="mdi:chevron-down" class="${this.downReached() || this.stateDisplay == "closing" ? "disabled" : ''}" @click="${this.onDownClick}"></ha-icon>
+                        <ha-icon icon="mdi:chevron-up" class="${this.upReached() || this.stateDisplay == "opening" ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
+                        <ha-icon icon="mdi:stop" class="${(this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
+                        <ha-icon icon="mdi:chevron-down" class="${this.downReached() || this.stateDisplay == "closing" ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
                     </div>
                 </div>
                 <div class="card-row card-second-row">
@@ -145,32 +184,77 @@ class ShutterRow extends LitElement {
             slider: this.renderRoot.querySelector("div.card-second-row ha-slider"),
         }
     }
-    // On move up button click
-    onUpClick() {
-        let elements = this._getElements();
-        if(this.stateDisplay == "opening" || elements.controls.hasAttribute("up-reached"))
-            return;
-        this.hass.callService("cover", "open_cover", {
-            entity_id: this.entityId,
-        });
+
+    // On move up pointer up
+    onMoveUpPointerUp() {
+        let onClickCallback = (e) => {
+            if(this.config.move_up_button && this.config.move_up_button.tap_action) {
+                this.callCustomAction(this.config.move_up_button, "tap_action");
+                return;
+            }
+            // Run default action
+            if(this.stateDisplay == "opening" || this._getElements().controls.hasAttribute("up-reached"))
+                return;
+            this.hass.callService("cover", "open_cover", {
+                entity_id: this.entityId,
+            });
+        }
+        let onHoldCallback = (e) => {
+            this.callCustomAction(this.config.move_up_button, "hold_action");
+        }
+        onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    // On move down button click
-    onDownClick() {
-        let elements = this._getElements();
-        if(this.stateDisplay == "closing" || elements.controls.hasAttribute("down-reached"))
-            return;
-        this.hass.callService("cover", "close_cover", {
-            entity_id: this.entityId,
-        });
+    // On move up double click
+    onMoveUpDoubleClick() {
+        this.callCustomAction(this.config.move_up_button, "double_tap_action");
     }
-    // On stop button click
-    onStopClick() {
-        if(this.stateDisplay == "open" || this.stateDisplay == "closed")
-            return;
-        this.hass.callService("cover", "stop_cover", {
-            entity_id: this.entityId,
-        });
+    // On move stop pointer up
+    onMoveStopPointerUp() {
+        let onClickCallback = (e) => {
+            if(this.config.move_stop_button && this.config.move_stop_button.tap_action) {
+                this.callCustomAction(this.config.move_stop_button, "tap_action");
+                return;
+            }
+            // Run default action
+            if(this.stateDisplay == "open" || this.stateDisplay == "closed")
+                return;
+            this.hass.callService("cover", "stop_cover", {
+                entity_id: this.entityId,
+            });
+        }
+        let onHoldCallback = (e) => {
+            this.callCustomAction(this.config.move_stop_button, "hold_action");
+        }
+        onPointerUp(this, onClickCallback, onHoldCallback);
     }
+    // On move down double click
+    onMoveStopDoubleClick() {
+        this.callCustomAction(this.config.move_stop_button, "double_tap_action");
+    }
+    // On move down pointer up
+    onMoveDownPointerUp() {
+        let onClickCallback = (e) => {
+            if(this.config.move_down_button && this.config.move_down_button.tap_action) {
+                this.callCustomAction(this.config.move_down_button, "tap_action");
+                return;
+            }
+            // Run default action
+            if(this.stateDisplay == "closing" || this._getElements().controls.hasAttribute("down-reached"))
+                return;
+            this.hass.callService("cover", "close_cover", {
+                entity_id: this.entityId,
+            });
+        }
+        let onHoldCallback = (e) => {
+            this.callCustomAction(this.config.move_down_button, "hold_action");
+        }
+        onPointerUp(this, onClickCallback, onHoldCallback);
+    }
+    // On move down double click
+    onMoveDownDoubleClick() {
+        this.callCustomAction(this.config.move_down_button, "double_tap_action");
+    }
+
     // On position input change
     onSliderChange() {
         let elements = this._getElements();
