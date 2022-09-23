@@ -18,7 +18,7 @@ div.card-row {
     align-items: center;
     height: 40px;
 }
-div.card-first-row ha-icon {
+div.card-row.first-row ha-icon {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -29,20 +29,34 @@ div.card-first-row ha-icon {
 div.entity-icon ha-icon {
     color: var(--paper-item-icon-color, #44739e);
 }
-div.card-first-row span.entity-name {
+div.card-row.first-row span.entity-name {
     margin-left: 16px;
     margin-right: 8px;
     cursor: pointer;
 }
-div.card-first-row div.controls {
+div.card-row.first-row div.controls {
     margin-left: auto;
 }
-div.card-second-row ha-slider {
+div.card-row.second-row ha-slider {
     width: 100%;
     padding-left: 40px;
     box-sizing: border-box;
 }
-div.card-second-row div.infos {
+div.card-row.second-row div.infos {
     width: 175px;
     text-align: right;
+}
+div.card-row.preset-buttons {
+    justify-content: center;
+    padding-left: 40px;
+    flex-wrap: wrap;
+    height: auto;
+}
+div.card-row.preset-buttons div.button {
+    position: relative;
+    padding: 0.5em 0.75em;
+    cursor: pointer;
+}
+div.card-row.preset-buttons div.button span {
+    margin-left: 0.25em;
 }

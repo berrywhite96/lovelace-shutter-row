@@ -21,3 +21,9 @@ export function onPointerUp(context, onClickCallback, onHoldCallback, e) {
         onClickCallback.bind(context)(e);
     }
 }
+
+export function getRippleElement() {
+    let ripple = document.createElement("mwc-ripple");
+    ripple.setAttribute("primary");
+    return ripple;
+}

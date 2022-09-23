@@ -27,6 +27,7 @@
   "author": "berrywhite",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "@material/mwc-ripple": "^0.27.0",
     "@rollup/plugin-commonjs": "^22.0.2",
     "custom-card-helpers": "^1.9.0",
     "lit": "^2.3.0",
