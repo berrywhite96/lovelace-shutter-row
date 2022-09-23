@@ -248,7 +248,7 @@ styleInject(css_248z);
 
 let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = "0.1.1";
+let VERSION = "0.2.0 rc1";
 
 
 class ShutterRow extends s {

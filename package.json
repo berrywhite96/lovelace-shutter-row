@@ -1,7 +1,7 @@
 {
   "name": "@berrywhite/lovelace-shutter-row",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0 rc1",
   "description": "Home Assistant Lovelace Shutter Row Card",
   "main": "shutter-row.js",
   "module": "shutter-row.js",
