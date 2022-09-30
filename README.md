@@ -49,7 +49,7 @@ preset_buttons:
 #### Main configuration
 | Name              | Type      | Default      | Description                                                                                    |
 |-------------------|-----------|--------------|------------------------------------------------------------------------------------------------|
-| `type`            | `string`  | **Required** | "custom:shutter-row" to use shutter row |
+| `type`            | `string`  | **Required** | `custom:shutter-row` to use shutter row |
 | `entity`          | `string`  | **Required** | Existing cover entity id |
 | `name`            | `string`  | Optional     | Overwrites friendly name from entity |
 | `invert_position` | `boolean` | false        | Inverts position value (0% => 100%, 30% => 70%), forces also `invert_position_label` to `true` |
@@ -63,7 +63,7 @@ preset_buttons:
 #### Preset button
 | Name              | Type      | Default      | Description                                                                                    |
 |-------------------|-----------|--------------|------------------------------------------------------------------------------------------------|
-| `icon`            | [`icon`](https://materialdesignicons.com/)  | Optional | Icon e.g. mdi:window-shutter |
+| `icon`            | [`icon`](https://materialdesignicons.com/)  | Optional | Icon e.g. `mdi:window-shutter` |
 | `name`            | `string`  | Optional | Label for button |
 | `tap_action` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Action on tap |
 | `double_tap_action` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Action on double tap |
