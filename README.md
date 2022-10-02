@@ -54,6 +54,7 @@ preset_buttons:
 | `name`            | `string`  | Optional     | Overwrites friendly name from entity |
 | `invert_position` | `boolean` | false        | Inverts position value (0% => 100%, 30% => 70%), forces also `invert_position_label` to `true` |
 | `invert_position_label` | `boolean` | false        | Inverts position label (if `false` => 0% = closed, 100% = open; if `true` => 0% = open, 100% = closed) |
+| `state_confidence` | `boolean` | true        | Trust full state support (if `false` ignore state and e.g. always enables move buttons ) |
 | `state_color` | `boolean` | false        | Enables icon coloring if entity is active |
 | `move_down_button` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Custom action for the move down button (overwrites default functions) |
 | `move_stop_button` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Custom action for the move stop button (overwrites default functions) |

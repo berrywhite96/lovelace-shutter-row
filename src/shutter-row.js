@@ -16,7 +16,7 @@ import style from "./style.css";
 
 let HASSIO_CARD_ID = "shutter-row";
 let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = "0.2.0"
+let VERSION = "0.2.1";
 
 
 class ShutterRow extends LitElement {
@@ -51,6 +51,7 @@ class ShutterRow extends LitElement {
             name: getConfigAttribute("name", false),
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
+            state_confidence: getConfigAttribute("state_confidence", true),
             state_color: getConfigAttribute("state_color", false),
             move_down_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
@@ -160,9 +161,9 @@ class ShutterRow extends LitElement {
                 
                 <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
-                    <ha-icon icon="mdi:chevron-up" class="${this.upReached() || this.stateDisplay == "opening" ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:stop" class="${(this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:chevron-down" class="${this.downReached() || this.stateDisplay == "closing" ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:chevron-up" class="${this.config.state_confidence && (this.upReached() || this.stateDisplay == "opening") ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:stop" class="${this.config.state_confidence && (this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:chevron-down" class="${this.config.state_confidence && (this.downReached() || this.stateDisplay == "closing") ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
                 </div>
             </div>
         `;
@@ -251,8 +252,9 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.stateDisplay == "opening" || this._getElements().controls.hasAttribute("up-reached"))
-                return;
+            if(this.config.state_confidence)
+                if(this.upReached())
+                    return;
             this.hass.callService("cover", "open_cover", {
                 entity_id: this.entityId,
             });
@@ -274,8 +276,9 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.stateDisplay == "open" || this.stateDisplay == "closed")
-                return;
+            if(this.config.state_confidence)
+                if(this.stateDisplay == "open" || this.stateDisplay == "closed")
+                    return;
             this.hass.callService("cover", "stop_cover", {
                 entity_id: this.entityId,
             });
@@ -297,8 +300,9 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.stateDisplay == "closing" || this._getElements().controls.hasAttribute("down-reached"))
-                return;
+            if(this.config.state_confidence)
+                if(this.downReached())
+                    return;
             this.hass.callService("cover", "close_cover", {
                 entity_id: this.entityId,
             });
@@ -337,4 +341,4 @@ class ShutterRow extends LitElement {
 }
 
 customElements.define(HASSIO_CARD_ID, ShutterRow);
-console.info("%c" + HASSIO_CARD_NAME.toLocaleUpperCase() + " " + VERSION, "color: #ffa500");    
+console.info("%c" + HASSIO_CARD_NAME.toLocaleUpperCase() + " " + VERSION, "color: #ffa500");
