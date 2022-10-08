@@ -51,7 +51,6 @@ class ShutterRow extends LitElement {
             name: getConfigAttribute("name", false),
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
-            state_confidence: getConfigAttribute("state_confidence", true),
             state_color: getConfigAttribute("state_color", false),
             move_down_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
@@ -153,6 +152,28 @@ class ShutterRow extends LitElement {
         return html`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
     }
     renderFirstRow() {
+        let moveUpDisabled = () => {
+            if(this.stateDisplay == "unavailable")
+                return true;
+            if(this.upReached() || this.stateDisplay == "opening" || this.state.attributes.moving == "UP")
+                return true;
+            return false;
+        };
+        let moveStopDisabled = () => {
+            if(this.stateDisplay == "unavailable")
+                return true;
+            if(this.state.attributes.moving == "STOP")
+                return true;
+            return false;
+        };
+        let moveDownDisabled = () => {
+            if(this.stateDisplay == "unavailable")
+                return true;
+            if(this.downReached() || this.stateDisplay == "closing" || this.state.attributes.moving == "DOWN")
+                return true;
+            return false;
+        };
+
         return html`
             <div class="card-row first-row">
                 <div class="entity-icon">
@@ -161,9 +182,9 @@ class ShutterRow extends LitElement {
                 
                 <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
-                    <ha-icon icon="mdi:chevron-up" class="${this.config.state_confidence && (this.upReached() || this.stateDisplay == "opening") ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:stop" class="${this.config.state_confidence && (this.stateDisplay == "open" || this.stateDisplay == "closed") ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:chevron-down" class="${this.config.state_confidence && (this.downReached() || this.stateDisplay == "closing") ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:chevron-up" class="${moveUpDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:stop" class="${moveStopDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
+                    <ha-icon icon="mdi:chevron-down" class="${moveDownDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
                 </div>
             </div>
         `;
@@ -252,9 +273,8 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.config.state_confidence)
-                if(this.upReached())
-                    return;
+            if(this.upReached())
+                return;
             this.hass.callService("cover", "open_cover", {
                 entity_id: this.entityId,
             });
@@ -276,9 +296,8 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.config.state_confidence)
-                if(this.stateDisplay == "open" || this.stateDisplay == "closed")
-                    return;
+            if(this.state.attributes.moving == "STOP")
+                return;
             this.hass.callService("cover", "stop_cover", {
                 entity_id: this.entityId,
             });
@@ -300,9 +319,8 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if(this.config.state_confidence)
-                if(this.downReached())
-                    return;
+            if(this.downReached())
+                return;
             this.hass.callService("cover", "close_cover", {
                 entity_id: this.entityId,
             });
