@@ -6,6 +6,11 @@ import {
     fireEvent,
     handleClick,
 } from "custom-card-helpers";
+import {
+    mdiChevronDown,
+    mdiStop,
+    mdiChevronUp,
+} from "@mdi/js";
 
 import {
     onHoldPointerDown,
@@ -182,9 +187,30 @@ class ShutterRow extends LitElement {
                 
                 <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
-                    <ha-icon icon="mdi:chevron-up" class="${moveUpDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:stop" class="${moveStopDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:chevron-down" class="${moveDownDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.open_cover")}
+                        .path="${mdiChevronUp}"
+                        .disabled=${moveUpDisabled()}
+                        @dblclick="${this.onMoveUpDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveUpPointerUp}">
+                    </ha-icon-button>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
+                        .path="${mdiStop}"
+                        .disabled="${moveStopDisabled()}"
+                        @dblclick="${this.onMoveStopDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveStopPointerUp}">
+                    </ha-icon-button>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.close_cover")}
+                        .path="${mdiChevronDown}"
+                        .disabled=${moveDownDisabled()}
+                        @dblclick="${this.onMoveDownDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveDownPointerUp}">
+                    </ha-icon-button>
                 </div>
             </div>
         `;

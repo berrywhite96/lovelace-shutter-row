@@ -6,23 +6,29 @@ div.controls[state="unavailable"] ha-icon  {
 ha-card {
     padding: 16px;
 }
-ha-icon[disabled] {
-    color: var(--disabled-text-color);
-    cursor: default;
-}
-ha-icon.active-icon {
+ha-icon.active-icon,
+ha-icon-button.active-icon {
     color: var(--paper-item-icon-active-color, #fdd835) !important;
 }
 div.card-row {
+    --card-row-height: 48px;
     display: flex;
     align-items: center;
-    height: 40px;
+    height: var(--card-row-height);
 }
 div.card-row.first-row ha-icon {
-    display: inline-block;
     width: 40px;
     height: 40px;
     line-height: 40px;
+}
+div.card-row.first-row ha-icon-button {
+    width: var(--card-row-height);
+    height: var(--card-row-height);
+    line-height: var(--card-row-height);
+}
+div.card-row.first-row ha-icon,
+div.card-row.first-row ha-icon-button {
+    display: inline-block;
     text-align: center;
     cursor: pointer;
 }
@@ -39,7 +45,7 @@ div.card-row.first-row div.controls {
 }
 div.card-row.second-row ha-slider {
     width: 100%;
-    padding-left: 40px;
+    padding-left: var(--card-row-height);
     box-sizing: border-box;
 }
 div.card-row.second-row div.infos {
@@ -48,7 +54,7 @@ div.card-row.second-row div.infos {
 }
 div.card-row.preset-buttons {
     justify-content: center;
-    padding-left: 40px;
+    padding-left: var(--card-row-height);
     flex-wrap: wrap;
     height: auto;
 }

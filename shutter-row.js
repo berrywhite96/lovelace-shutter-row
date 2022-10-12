@@ -123,6 +123,11 @@ var __assign = (undefined && undefined.__assign) || function () {
 
 var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function O(){return (O=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n]);}return e}).apply(this,arguments)}function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)},be=function(e,t,r,n,i){var a;if(i&&r.double_tap_action?a=r.double_tap_action:n&&r.hold_action?a=r.hold_action:!n&&r.tap_action&&(a=r.tap_action),a||(a={action:"more-info"}),!a.confirmation||a.confirmation.exemptions&&a.confirmation.exemptions.some(function(e){return e.user===t.user.id})||confirm(a.confirmation.text||"Are you sure you want to "+a.action+"?"))switch(a.action){case"more-info":(a.entity||r.entity||r.camera_image)&&(ne(e,"hass-more-info",{entityId:a.entity?a.entity:r.entity?r.entity:r.camera_image}),a.haptic&&le(a.haptic));break;case"navigate":a.navigation_path&&(de(0,a.navigation_path),a.haptic&&le(a.haptic));break;case"url":a.url_path&&window.open(a.url_path),a.haptic&&le(a.haptic);break;case"toggle":r.entity&&(ge(t,r.entity),a.haptic&&le(a.haptic));break;case"call-service":if(!a.service)return;var o=a.service.split(".",2),u=o[0],c=o[1],m=O({},a.service_data);"entity"===m.entity_id&&(m.entity_id=r.entity),t.callService(u,c,m,a.target),a.haptic&&le(a.haptic);break;case"fire-dom-event":ne(e,"ll-custom",a),a.haptic&&le(a.haptic);}};
 
+// Material Design Icons v7.0.96
+var mdiChevronDown = "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z";
+var mdiChevronUp = "M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z";
+var mdiStop = "M18,18H6V6H18V18Z";
+
 var HOLD_TIMER;
 var HOLD_ACTIVED = false;
 var HOLD_TIME = 500;
@@ -188,24 +193,30 @@ div.controls[state="unavailable"] ha-icon  {
 ha-card {
     padding: 16px;
 }
-ha-icon[disabled] {
-    color: var(--disabled-text-color);
-    cursor: default;
-}
-ha-icon.active-icon {
+ha-icon.active-icon,
+ha-icon-button.active-icon {
     color: #fdd835 !important;
     color: var(--paper-item-icon-active-color, #fdd835) !important;
 }
 div.card-row {
+    --card-row-height: 48px;
     display: flex;
     align-items: center;
-    height: 40px;
+    height: var(--card-row-height);
 }
 div.card-row.first-row ha-icon {
-    display: inline-block;
     width: 40px;
     height: 40px;
     line-height: 40px;
+}
+div.card-row.first-row ha-icon-button {
+    width: var(--card-row-height);
+    height: var(--card-row-height);
+    line-height: var(--card-row-height);
+}
+div.card-row.first-row ha-icon,
+div.card-row.first-row ha-icon-button {
+    display: inline-block;
     text-align: center;
     cursor: pointer;
 }
@@ -223,7 +234,7 @@ div.card-row.first-row div.controls {
 }
 div.card-row.second-row ha-slider {
     width: 100%;
-    padding-left: 40px;
+    padding-left: var(--card-row-height);
     box-sizing: border-box;
 }
 div.card-row.second-row div.infos {
@@ -232,7 +243,7 @@ div.card-row.second-row div.infos {
 }
 div.card-row.preset-buttons {
     justify-content: center;
-    padding-left: 40px;
+    padding-left: var(--card-row-height);
     flex-wrap: wrap;
     height: auto;
 }
@@ -414,9 +425,30 @@ class ShutterRow extends s {
                 
                 <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
-                    <ha-icon icon="mdi:chevron-up" class="${moveUpDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveUpDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveUpPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:stop" class="${moveStopDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveStopDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveStopPointerUp}"></ha-icon>
-                    <ha-icon icon="mdi:chevron-down" class="${moveDownDisabled() ? "disabled" : ''}" @dblclick="${this.onMoveDownDoubleClick}" @pointerdown="${onHoldPointerDown}" @pointerup="${this.onMoveDownPointerUp}"></ha-icon>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.open_cover")}
+                        .path="${mdiChevronUp}"
+                        .disabled=${moveUpDisabled()}
+                        @dblclick="${this.onMoveUpDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveUpPointerUp}">
+                    </ha-icon-button>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
+                        .path="${mdiStop}"
+                        .disabled="${moveStopDisabled()}"
+                        @dblclick="${this.onMoveStopDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveStopPointerUp}">
+                    </ha-icon-button>
+                    <ha-icon-button
+                        .label=${this.hass.localize("ui.dialogs.more_info_control.cover.close_cover")}
+                        .path="${mdiChevronDown}"
+                        .disabled=${moveDownDisabled()}
+                        @dblclick="${this.onMoveDownDoubleClick}"
+                        @pointerdown="${onHoldPointerDown}"
+                        @pointerup="${this.onMoveDownPointerUp}">
+                    </ha-icon-button>
                 </div>
             </div>
         `;
