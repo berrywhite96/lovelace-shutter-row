@@ -39,6 +39,10 @@ div.card-row.first-row span.entity-name {
     margin-left: 16px;
     margin-right: 8px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1 1;
 }
 div.card-row.first-row div.controls {
     margin-left: auto;

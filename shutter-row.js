@@ -228,6 +228,10 @@ div.card-row.first-row span.entity-name {
     margin-left: 16px;
     margin-right: 8px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    flex: 1 1;
 }
 div.card-row.first-row div.controls {
     margin-left: auto;
@@ -436,7 +440,7 @@ class ShutterRow extends s {
                     <ha-icon-button
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
                         .path="${mdiStop}"
-                        .disabled="${moveStopDisabled()}"
+                        .disabled=${moveStopDisabled()}
                         @dblclick="${this.onMoveStopDoubleClick}"
                         @pointerdown="${onHoldPointerDown}"
                         @pointerup="${this.onMoveStopPointerUp}">

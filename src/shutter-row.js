@@ -198,7 +198,7 @@ class ShutterRow extends LitElement {
                     <ha-icon-button
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
                         .path="${mdiStop}"
-                        .disabled="${moveStopDisabled()}"
+                        .disabled=${moveStopDisabled()}
                         @dblclick="${this.onMoveStopDoubleClick}"
                         @pointerdown="${onHoldPointerDown}"
                         @pointerup="${this.onMoveStopPointerUp}">
