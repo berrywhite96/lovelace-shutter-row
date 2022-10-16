@@ -56,6 +56,7 @@ class ShutterRow extends LitElement {
             name: getConfigAttribute("name", false),
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
+            disable_position: getConfigAttribute("disable_position", false),
             state_color: getConfigAttribute("state_color", false),
             group: getConfigAttribute("group", false),
             move_down_button: {
@@ -141,20 +142,37 @@ class ShutterRow extends LitElement {
                 return true;
         return false;
     }
+    // Returns generalized moving state, returns false if not moving
+    currentMoving() {
+        if(this.stateDisplay == "opening" || this.state.attributes.moving == "UP")
+            return "up";
+        if(this.stateDisplay == "closing" || this.state.attributes.moving == "DOWN")
+            return "down";
+        return false;
+    }
 
     // Render entity icon
     renderIcon() {
         let icon = "";
-        // Check for entity defined icon
-        if(this.state.attributes.icon != undefined)
-            icon = this.state.attributes.icon;
-        else {
-            // Use dynamic icon
-            if(this.downReached())
-                icon = "mdi:window-shutter";
-            else
-                icon = "mdi:window-shutter-open";
+        // Check for moving
+        if(this.currentMoving()) {
+            if(this.currentMoving() == "up")
+                icon = "mdi:chevron-up-box";
+            if(this.currentMoving() == "down")
+                icon = "mdi:chevron-down-box";
+        } else {
+            // Check for entity defined icon
+            if(this.state.attributes.icon != undefined)
+                icon = this.state.attributes.icon;
+            else {
+                // Use dynamic icon
+                if(this.downReached())
+                    icon = "mdi:window-shutter";
+                else
+                    icon = "mdi:window-shutter-open";
+            }
         }
+        
         return html`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
     }
     // Render first row within card content
@@ -162,7 +180,7 @@ class ShutterRow extends LitElement {
         let moveUpDisabled = () => {
             if(this.stateDisplay == "unavailable")
                 return true;
-            if(this.upReached() || this.stateDisplay == "opening" || this.state.attributes.moving == "UP")
+            if(this.upReached() || this.currentMoving() == "up")
                 return true;
             return false;
         };
@@ -176,7 +194,7 @@ class ShutterRow extends LitElement {
         let moveDownDisabled = () => {
             if(this.stateDisplay == "unavailable")
                 return true;
-            if(this.downReached() || this.stateDisplay == "closing" || this.state.attributes.moving == "DOWN")
+            if(this.downReached() || this.currentMoving() == "down")
                 return true;
             return false;
         };
@@ -275,6 +293,12 @@ class ShutterRow extends LitElement {
     }
     // Render card content
     renderContent() {
+        if(this.config.disable_position)
+            return html`
+                ${this.renderFirstRow()}
+                ${this.renderPresetsRow()}
+            `;
+
         return html`
             ${this.renderFirstRow()}
             ${this.renderSecondRow()}
