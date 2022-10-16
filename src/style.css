@@ -46,6 +46,7 @@ div.card-row.first-row span.entity-name {
 }
 div.card-row.first-row div.controls {
     margin-left: auto;
+    margin-right: -0.57em;
 }
 div.card-row.second-row ha-slider {
     width: 100%;

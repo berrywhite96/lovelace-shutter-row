@@ -235,6 +235,7 @@ div.card-row.first-row span.entity-name {
 }
 div.card-row.first-row div.controls {
     margin-left: auto;
+    margin-right: -0.57em;
 }
 div.card-row.second-row ha-slider {
     width: 100%;
@@ -299,6 +300,7 @@ class ShutterRow extends s {
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
             state_color: getConfigAttribute("state_color", false),
+            group: getConfigAttribute("group", false),
             move_down_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
                 double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_down_button", false)),
@@ -398,6 +400,7 @@ class ShutterRow extends s {
         }
         return y`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
     }
+    // Render first row within card content
     renderFirstRow() {
         let moveUpDisabled = () => {
             if(this.stateDisplay == "unavailable")
@@ -457,6 +460,7 @@ class ShutterRow extends s {
             </div>
         `;
     }
+    // Render second row within card content
     renderSecondRow() {
         return y`
             <div class="card-row second-row">
@@ -467,6 +471,7 @@ class ShutterRow extends s {
             </div>
         `;
     }
+    // Render presets row within card content
     renderPresetsRow() {
         if(!this.config.preset_buttons)
             return;
@@ -480,6 +485,7 @@ class ShutterRow extends s {
             </div>
         `;
     }
+    // Render one preset for the preset row
     renderPreset(presetConfig) {
         // Ripple effect
         let ripple = getRippleElement();
@@ -510,15 +516,26 @@ class ShutterRow extends s {
             </div>
         `;
     }
+    // Render card content
+    renderContent() {
+        return y`
+            ${this.renderFirstRow()}
+            ${this.renderSecondRow()}
+            ${this.renderPresetsRow()}
+        `;
+    }
     // Render lovelace card
     render() {
         this.setMeta();
+
+        // If card is part of group, root <ha-card> element is not needed
+        if(this.config.group)
+            return this.renderContent();
         
+        // Render card with <ha-card> element
         return y`
             <ha-card>
-                ${this.renderFirstRow()}
-                ${this.renderSecondRow()}
-                ${this.renderPresetsRow()}
+                ${this.renderContent()}
             </ha-card>
         `;
     }
