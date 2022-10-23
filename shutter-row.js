@@ -300,6 +300,7 @@ class ShutterRow extends s {
             invert_position: getConfigAttribute("invert_position", false),
             invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
             disable_position: getConfigAttribute("disable_position", false),
+            rtl_position: getConfigAttribute("rtl_position", false),
             state_color: getConfigAttribute("state_color", false),
             group: getConfigAttribute("group", false),
             move_down_button: {
@@ -482,7 +483,7 @@ class ShutterRow extends s {
     renderSecondRow() {
         return y`
             <div class="card-row second-row">
-                <ha-slider ignore-bar-touch="" min="0" max="100" value=${this.getPosition()} step="5" pin dir="ltr" role="slider" @change="${this.onSliderChange}"></ha-slider>
+                <ha-slider ignore-bar-touch="" min="0" max="100" value=${this.getPosition()} step="5" pin dir="${this.config.rtl_position ? "rtl": "ltr"}" role="slider" @change="${this.onSliderChange}"></ha-slider>
                 <div class="infos">
                     <span class="position">${this.getPositionLabel()}</span>
                 </div>

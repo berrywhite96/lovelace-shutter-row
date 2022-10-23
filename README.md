@@ -54,6 +54,7 @@ preset_buttons:
 | `name`            | `string`  | Optional     | Overwrites friendly name from entity |
 | `invert_position` | `boolean` | false        | Inverts position value (0% => 100%, 30% => 70%), forces also `invert_position_label` to `true` |
 | `invert_position_label` | `boolean` | false        | Inverts position label (if `false` => 0% = closed, 100% = open; if `true` => 0% = open, 100% = closed) |
+| `rtl_position` | `boolean` | false        | Switches direction of the position slider to right to left |
 | `state_color` | `boolean` | false        | Enables icon coloring if entity is active |
 | `group` | `boolean` | false        | Removes outer card styling, use if card is part of entities card |
 | `move_down_button` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Custom action for the move down button (overwrites default functions) |
