@@ -71,6 +71,16 @@ preset_buttons:
 | `double_tap_action` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Action on double tap |
 | `hold_action` | [`action`](https://www.home-assistant.io/dashboards/actions/) | Optional        | Action on hold |
 
+#### Action
+The action type is the typical Home Assistant [`action`](https://www.home-assistant.io/dashboards/actions/) variable extended by the `set-position` action. It's an shortcut for the `set_cover_position` service.
+
+| Name              | Type      | Default      | Description                                                                                    |
+|-------------------|-----------|--------------|------------------------------------------------------------------------------------------------|
+| `action`            | `string` | **Required** | `set-position` or any other [`action`](https://www.home-assistant.io/dashboards/actions/) |
+| `position`            | `int` | Optional | Used if action is `set-position`, sets the cover position for the card entity |
+
+Any other [`action`](https://www.home-assistant.io/dashboards/actions/) does work as well.
+
 
 ## License
 This project is under the [MIT](https://opensource.org/licenses/MIT) license.

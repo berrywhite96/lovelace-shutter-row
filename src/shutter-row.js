@@ -16,12 +16,20 @@ import {
     onHoldPointerDown,
     onPointerUp,
     getRippleElement,
-} from "./helpers.js"
+} from "./helpers.js";
+import {
+    HASSIO_CARD_ID,
+    HASSIO_CARD_NAME,
+    VERSION,
+    PATH_SHUTTER_100,
+    PATH_SHUTTER_75,
+    PATH_SHUTTER_50,
+    PATH_SHUTTER_25,
+    PATH_SHUTTER_0,
+    PATH_SHUTTER_UP,
+    PATH_SHUTTER_DOWN,
+} from "./const.js";
 import style from "./style.css";
-
-let HASSIO_CARD_ID = "shutter-row";
-let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = "0.2.2";
 
 
 class ShutterRow extends LitElement {
@@ -84,7 +92,16 @@ class ShutterRow extends LitElement {
         // Check if defined
         if(!config[action])
             return;
+
         // Run custom action
+        // Run function action = "set-position"
+        if(config[action].action == "set-position" && config[action]["position"])
+            this.hass.callService("cover", "set_cover_position", {
+                entity_id: this.entityId,
+                position: this.config.invert_position ? (100 - config[action]["position"]) : config[action]["position"],
+            });
+
+        // Call HA handle function
         switch(action) {
             case "tap_action": handleClick(this, this.hass, config, false, false); break;
             case "double_tap_action": handleClick(this, this.hass, config, false, true); break;
@@ -154,27 +171,35 @@ class ShutterRow extends LitElement {
 
     // Render entity icon
     renderIcon() {
-        let icon = "";
-        // Check for moving
-        if(this.currentMoving()) {
-            if(this.currentMoving() == "up")
-                icon = "mdi:chevron-up-box";
-            if(this.currentMoving() == "down")
-                icon = "mdi:chevron-down-box";
-        } else {
-            // Check for entity defined icon
-            if(this.state.attributes.icon != undefined)
-                icon = this.state.attributes.icon;
-            else {
-                // Use dynamic icon
-                if(this.downReached())
-                    icon = "mdi:window-shutter";
-                else
-                    icon = "mdi:window-shutter-open";
-            }
+        let getIconElementById = (icon) => {
+            return html`<ha-icon-button icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+        };
+        let getIconElementByPath = (path) => {
+            return html`<ha-icon-button path="${path}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
         }
-        
-        return html`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+
+        // Check for moving
+        if(this.currentMoving() == "up")
+            return getIconElementByPath(PATH_SHUTTER_UP);
+        if(this.currentMoving() == "down")
+            return getIconElementByPath(PATH_SHUTTER_DOWN);
+
+        // Check for entity defined icon
+        if(this.state.attributes.icon != undefined)
+            return getIconElementById(this.state.attributes.icon);
+        this.getPosition()
+
+        // Use dynamic icon
+        if(this.downReached())
+            return getIconElementByPath(PATH_SHUTTER_100);
+        if(this.getPosition() > 66)
+            return getIconElementByPath(PATH_SHUTTER_75);
+        if(this.getPosition() > 33)
+            return getIconElementByPath(PATH_SHUTTER_50);
+        if(this.getPosition() > 0)
+            return getIconElementByPath(PATH_SHUTTER_25);
+
+        return getIconElementByPath(PATH_SHUTTER_0);
     }
     // Render first row within card content
     renderFirstRow() {

@@ -158,6 +158,20 @@ function getRippleElement() {
     return ripple;
 }
 
+// GENERAL
+const HASSIO_CARD_ID = "shutter-row-dev";
+const HASSIO_CARD_NAME = "Shutter row";
+const VERSION = "0.2.2";
+
+// SVG PATHS
+const PATH_SHUTTER_100 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15 M 8 18 L 12 18 L 16 18 L 16 19 L 16 20 L 12 20 L 8 20 L 8 19 Z";
+const PATH_SHUTTER_75 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15";
+const PATH_SHUTTER_50 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12";
+const PATH_SHUTTER_25 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9";
+const PATH_SHUTTER_0 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4";
+const PATH_SHUTTER_UP = "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.86,12.5928l3.14,-3.13316l3.14,3.13316l0.96458,-0.96458l-4.10458,-4.10458l-4.10458,4.10458l0.96458,0.96458z";
+const PATH_SHUTTER_DOWN = "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.72989,8.28425l3.27011,3.27011l3.27011,-3.27011l1.00454,1.01167l-4.27465,4.27465l-4.27465,-4.27465l1.00454,-1.01167z";
+
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
   var insertAt = ref.insertAt;
@@ -262,11 +276,6 @@ div.card-row.preset-buttons div.button span {
 }`;
 styleInject(css_248z);
 
-let HASSIO_CARD_ID = "shutter-row";
-let HASSIO_CARD_NAME = "Shutter row";
-let VERSION = "0.2.2";
-
-
 class ShutterRow extends s {
     /*
         Lovelace needed functions
@@ -327,7 +336,16 @@ class ShutterRow extends s {
         // Check if defined
         if(!config[action])
             return;
+
         // Run custom action
+        // Run function action = "set-position"
+        if(config[action].action == "set-position" && config[action]["position"])
+            this.hass.callService("cover", "set_cover_position", {
+                entity_id: this.entityId,
+                position: this.config.invert_position ? (100 - config[action]["position"]) : config[action]["position"],
+            });
+
+        // Call HA handle function
         switch(action) {
             case "tap_action": be(this, this.hass, config, false, false); break;
             case "double_tap_action": be(this, this.hass, config, false, true); break;
@@ -397,27 +415,35 @@ class ShutterRow extends s {
 
     // Render entity icon
     renderIcon() {
-        let icon = "";
+        let getIconElementById = (icon) => {
+            return y`<ha-icon-button icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+        };
+        let getIconElementByPath = (path) => {
+            return y`<ha-icon-button path="${path}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+        };
+
         // Check for moving
-        if(this.currentMoving()) {
-            if(this.currentMoving() == "up")
-                icon = "mdi:chevron-up-box";
-            if(this.currentMoving() == "down")
-                icon = "mdi:chevron-down-box";
-        } else {
-            // Check for entity defined icon
-            if(this.state.attributes.icon != undefined)
-                icon = this.state.attributes.icon;
-            else {
-                // Use dynamic icon
-                if(this.downReached())
-                    icon = "mdi:window-shutter";
-                else
-                    icon = "mdi:window-shutter-open";
-            }
-        }
-        
-        return y`<ha-icon icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+        if(this.currentMoving() == "up")
+            return getIconElementByPath(PATH_SHUTTER_UP);
+        if(this.currentMoving() == "down")
+            return getIconElementByPath(PATH_SHUTTER_DOWN);
+
+        // Check for entity defined icon
+        if(this.state.attributes.icon != undefined)
+            return getIconElementById(this.state.attributes.icon);
+        this.getPosition();
+
+        // Use dynamic icon
+        if(this.downReached())
+            return getIconElementByPath(PATH_SHUTTER_100);
+        if(this.getPosition() > 66)
+            return getIconElementByPath(PATH_SHUTTER_75);
+        if(this.getPosition() > 33)
+            return getIconElementByPath(PATH_SHUTTER_50);
+        if(this.getPosition() > 0)
+            return getIconElementByPath(PATH_SHUTTER_25);
+
+        return getIconElementByPath(PATH_SHUTTER_0);
     }
     // Render first row within card content
     renderFirstRow() {
