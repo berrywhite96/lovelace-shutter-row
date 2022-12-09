@@ -33,20 +33,41 @@ import style from "./style.css";
 
 
 class ShutterRow extends LitElement {
+    constructor() {
+        super();
+
+        // Define empty 'templated' variable for rendered templates
+        this.templated = {};
+    }
+
     /*
-        Lovelace needed functions
+        =========================================
+        = Lovelace needed functions
+        =========================================
     */
     static get properties() {
         return {
             hass: Object,
             config: Object,
+            templated_changed: Boolean, // Because 'templated' as variable didn't rerender, there is a boolean which flips on every template changed
         };
     }
-    // Lovelace card height
+    /*
+         Returns CSS style
+    */
+    static get styles() {
+        return style;
+    }
+
+    /*
+        Lovelace function to get card height
+    */
     getCardSize() {
         return 2;
     }
-    // On user config update
+    /*
+        On user config update
+    */
     setConfig(config) {
         let getConfigAttribute = (attribute, defaultValue, array=this._config) => {
             if(!array)
@@ -68,6 +89,8 @@ class ShutterRow extends LitElement {
             rtl_position: getConfigAttribute("rtl_position", false),
             state_color: getConfigAttribute("state_color", false),
             group: getConfigAttribute("group", false),
+            title_template: getConfigAttribute("title_template", false),
+            position_template: getConfigAttribute("position_template", false),
             move_down_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
                 double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_down_button", false)),
@@ -87,7 +110,9 @@ class ShutterRow extends LitElement {
         }
         this.entityId = this.config.entity;
     }
-    // Calls custom action if defined
+    /*
+        Calls custom action if defined
+    */
     callCustomAction(config, action) {
         // Check if defined
         if(!config[action])
@@ -110,26 +135,39 @@ class ShutterRow extends LitElement {
     }
 
     /*
-        Card functions
+        =========================================
+        = Card functions
+        =========================================
     */
-    // Returns CSS style
-    static get styles() {
-        return style;
-    }
-    // Get entity name
+
+    /*
+        Get card title
+    */
     getName() {
+        // Check for custom template
+        if(this.getTemplateText("titleLabel"))
+            return this.getTemplateText("titleLabel");
+
         if(this.config.name)
             return this.config.name;
         return this.state.attributes.friendly_name;
     }
-    // Get position value
+    /*
+        Get position value
+    */
     getPosition() {
         if(this.config.invert_position)
             return (100 - this.state.attributes.current_position);
         return this.state.attributes.current_position;
     }
-    // Get position text for label
+    /*
+        Get position text for label
+    */
     getPositionLabel() {
+        // Check for custom template
+        if(this.getTemplateText("positionLabel"))
+            return this.getTemplateText("positionLabel");
+
         if( (this.config.invert_position_label && this.getPosition() == 100) ||
                 (!this.config.invert_position_label && this.getPosition() == 0) )
             return this.hass.localize("component.cover.state._.closed");
@@ -138,29 +176,37 @@ class ShutterRow extends LitElement {
             return this.hass.localize("component.cover.state._.open");
         return `${this.getPosition()} %`;
     }
-    // Sets meta for variables
+    /*
+        Sets meta for variables
+    */
     setMeta(force=false) {
         // Only on change
         if(this.state == this.hass.states[this.entityId] && !force)
             return;
         this.state = this.hass.states[this.entityId];
         this.stateDisplay = this.state ? this.state.state : 'unavailable';
-    }
-    // Checks if cover is fully opened
+    } 
+    /*
+        Checks if cover is fully opened
+    */
     upReached() {
         if(!this.config.invert_position_label && this.getPosition() == 100 ||
         this.config.invert_position_label && this.getPosition() == 0)
                 return true;
         return false;
     }
-    // Checks if cover is fully closed
+    /*
+        Checks if cover is fully closed
+    */
     downReached() {
         if(this.config.invert_position_label && this.getPosition() == 100 ||
             !this.config.invert_position_label && this.getPosition() == 0)
                 return true;
         return false;
     }
-    // Returns generalized moving state, returns false if not moving
+    /*
+        Returns generalized moving state, returns false if not moving
+    */
     currentMoving() {
         if(this.stateDisplay == "opening" || this.state.attributes.moving == "UP")
             return "up";
@@ -168,8 +214,9 @@ class ShutterRow extends LitElement {
             return "down";
         return false;
     }
-
-    // Render entity icon
+    /*
+        Render entity icon
+    */ 
     renderIcon() {
         let getIconElementById = (icon) => {
             return html`<ha-icon-button icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
@@ -201,7 +248,9 @@ class ShutterRow extends LitElement {
 
         return getIconElementByPath(PATH_SHUTTER_0);
     }
-    // Render first row within card content
+    /*
+        Render first row within card content
+    */
     renderFirstRow() {
         let moveUpDisabled = () => {
             if(this.stateDisplay == "unavailable")
@@ -261,7 +310,9 @@ class ShutterRow extends LitElement {
             </div>
         `;
     }
-    // Render second row within card content
+    /*
+        Render second row within card content
+    */
     renderSecondRow() {
         return html`
             <div class="card-row second-row">
@@ -272,7 +323,9 @@ class ShutterRow extends LitElement {
             </div>
         `;
     }
-    // Render presets row within card content
+    /*
+        Render presets row within card content
+    */
     renderPresetsRow() {
         if(!this.config.preset_buttons)
             return;
@@ -286,7 +339,9 @@ class ShutterRow extends LitElement {
             </div>
         `;
     }
-    // Render one preset for the preset row
+    /*
+        Render one preset for the preset row
+    */
     renderPreset(presetConfig) {
         // Ripple effect
         let ripple = getRippleElement();
@@ -317,7 +372,9 @@ class ShutterRow extends LitElement {
             </div>
         `;
     }
-    // Render card content
+    /*
+        Render card content
+    */
     renderContent() {
         if(this.config.disable_position)
             return html`
@@ -331,8 +388,64 @@ class ShutterRow extends LitElement {
             ${this.renderPresetsRow()}
         `;
     }
-    // Render lovelace card
+    /*
+        Adds template listener
+    */
+    addTemplate(attribute, template) {
+        // Check if already defined
+        if(attribute in this.templated)
+            return;
+
+        // Define variables
+        let params = {};
+        let variables = {
+            entity: this.entityId,
+            hash: location.hash.substr(1) || ' ',
+            ...params.variables,
+        };
+        var context = this;
+        let onChange = function(result) {
+            context.templated[attribute] = result;
+            context.templated_changed = !context.templated_changed;
+        }
+
+        // Set init object and subscribe to connection
+        context.templated[attribute] = true;
+        this.hass.connection.subscribeMessage(onChange, {
+            type: "render_template",
+            template,
+            variables,
+        });
+    }
+    /*
+        Gets rendered template text
+    */
+    getTemplateText(attribute) {
+        if(attribute in this.templated == false)
+            return false;
+        if(this.templated.attribute)
+            return false;
+        return this.templated[attribute].result;
+    }
+    /*
+        Before rendering html
+    */
+    preRender() {
+        // Add template renderer
+        let addConfigTemplate = (configAttribute, templateId) => {
+            let configValue = this.config[configAttribute];
+            if(configValue)
+                this.addTemplate(templateId, configValue);
+        }
+
+        addConfigTemplate("position_template", "positionLabel");
+        addConfigTemplate("title_template", "titleLabel");
+    }
+    /*
+        Render lovelace card
+    */
     render() {
+        this.preRender();
         this.setMeta();
 
         // If card is part of group, root <ha-card> element is not needed
@@ -346,18 +459,26 @@ class ShutterRow extends LitElement {
             </ha-card>
         `;
     }
+
+
     /*
-        DOM element handler
+        =========================================
+        = DOM element handler
+        =========================================
     */
-    // Get all important DOM elements
+
+    /*
+        Get all important DOM elements
+    */
     _getElements() {
         return {
             controls: this.renderRoot.querySelector("div.card-row.first-row div.controls"),
             slider: this.renderRoot.querySelector("div.card-row.second-row ha-slider"),
         }
     }
-
-    // On move up pointer up
+    /*
+        On move up pointer up
+    */
     onMoveUpPointerUp() {
         let onClickCallback = (e) => {
             if(this.config.move_up_button && this.config.move_up_button.tap_action) {
@@ -376,11 +497,15 @@ class ShutterRow extends LitElement {
         }
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    // On move up double click
+    /*
+        On move up double click
+    */
     onMoveUpDoubleClick() {
         this.callCustomAction(this.config.move_up_button, "double_tap_action");
     }
-    // On move stop pointer up
+    /*
+        On move stop pointer up
+    */
     onMoveStopPointerUp() {
         let onClickCallback = (e) => {
             if(this.config.move_stop_button && this.config.move_stop_button.tap_action) {
@@ -399,11 +524,15 @@ class ShutterRow extends LitElement {
         }
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    // On move down double click
+    /*
+        On move down double click
+    */
     onMoveStopDoubleClick() {
         this.callCustomAction(this.config.move_stop_button, "double_tap_action");
     }
-    // On move down pointer up
+    /*
+        On move down pointer up
+    */
     onMoveDownPointerUp() {
         let onClickCallback = (e) => {
             if(this.config.move_down_button && this.config.move_down_button.tap_action) {
@@ -422,12 +551,15 @@ class ShutterRow extends LitElement {
         }
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    // On move down double click
+    /*
+        On move down double click
+    */
     onMoveDownDoubleClick() {
         this.callCustomAction(this.config.move_down_button, "double_tap_action");
     }
-
-    // On position input change
+    /*
+        On position input change
+    */
     onSliderChange() {
         let elements = this._getElements();
         let value = parseInt(elements.slider.value);
@@ -438,7 +570,9 @@ class ShutterRow extends LitElement {
             position: this.config.invert_position ? (100 - value) : value,
         });
     }
-    // Open HA more info
+    /*
+        Open HA more info
+    */
     moreInfo() {
         let entityId = this.config.entity;
         fireEvent(this, 'hass-more-info', {
