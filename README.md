@@ -15,12 +15,12 @@ Go to the `Frontend` section and search for `Shutter Row`.
 1. Download `shutter-row.js` file from [latest release](https://github.com/berrywhite96/lovelace-shutter-row/releases).
 2. Put `shutter-row.js` file into your `config/www` folder.
 3. Add reference to `shutter-row.js` in Lovelace. There's two ways to do that:
-   1. ~~**Using UI:** _Configuration_ → _Lovelace Dashboards_ → _Resources Tab_ → Click Plus button → Set _Url_ as `/local/shutter-row.js` → Set _Resource type_ as `JavaScript Module`.
-      **Note:** If you do not see the Resources Tab, you will need to enable _Advanced Mode_ in your _User Profile_~~
+   1. **Using UI:** _Settings_ → _Dashboards_ → Click on the three dots in the top right → _Resources_ → _Add resource_ → Set _Url_ as `/hacsfiles/lovelace-shutter-row/shutter-row.js` → Set _Resource type_ as `JavaScript Module`.
+      **Note:** If you do not see the Resources Tab, you will need to enable _Advanced Mode_ in your _User Profile_
    2. **Using YAML:** Add following code to `lovelace` section.
       ```yaml
       resources:
-        - url: /local/shutter-row.js
+        - url: /hacsfiles/lovelace-shutter-row/shutter-row.js
           type: module
       ```
 4. Add `custom:shutter-row` to Lovelace UI as any other card (using either editor or YAML configuration).

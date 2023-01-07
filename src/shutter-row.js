@@ -19,6 +19,7 @@ import {
 } from "./helpers.js";
 import {
     HASSIO_CARD_ID,
+    HASSIO_CARD_EDITOR_ID,
     HASSIO_CARD_NAME,
     VERSION,
     PATH_SHUTTER_100,
@@ -30,6 +31,7 @@ import {
     PATH_SHUTTER_DOWN,
 } from "./const.js";
 import style from "./style.css";
+import "./editor.js";
 
 
 class ShutterRow extends LitElement {
@@ -57,6 +59,13 @@ class ShutterRow extends LitElement {
     */
     static get styles() {
         return style;
+    }
+
+    /*
+        Getter function for shutter row editor element
+    */
+    static getConfigElement() {
+        return document.createElement(HASSIO_CARD_EDITOR_ID);
     }
 
     /*

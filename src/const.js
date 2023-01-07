@@ -1,5 +1,6 @@
 // GENERAL
-export const HASSIO_CARD_ID = "shutter-row-dev";
+export const HASSIO_CARD_ID = "shutter-row";
+export const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 export const HASSIO_CARD_NAME = "Shutter row";
 export const VERSION = "0.2.2";
 
