@@ -17,6 +17,7 @@ Go to the `Frontend` section and search for `Shutter Row`.
 3. Add reference to `shutter-row.js` in Lovelace. There's two ways to do that:
    1. **Using UI:** _Settings_ → _Dashboards_ → Click on the three dots in the top right → _Resources_ → _Add resource_ → Set _Url_ as `/hacsfiles/lovelace-shutter-row/shutter-row.js` → Set _Resource type_ as `JavaScript Module`.
       **Note:** If you do not see the Resources Tab, you will need to enable _Advanced Mode_ in your _User Profile_
+      **Note:** Currently the actions and the preset buttons can't be configured with the UI. Click on _Show code editor_ and configure these with YAML.
    2. **Using YAML:** Add following code to `lovelace` section.
       ```yaml
       resources:
