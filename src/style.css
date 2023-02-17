@@ -1,5 +1,5 @@
 .disabled,
-div.controls[state="unavailable"] ha-icon  {
+div.controls[state="unavailable"] ha-icon {
     color: var(--disabled-text-color);
     cursor: default;
 }

@@ -1,0 +1,17 @@
+{
+    "editor": {
+        "invert_position": "Invert position value",
+        "invert_position_label": "Invert open and closed status",
+        "disable_position": "Hide position slider",
+        "rtl_position": "Switch direction of the position slider",
+        "group": "Group",
+        "title_template": "Title template",
+        "position_template": "Position label template",
+        "move_down_button": "Move down button action",
+        "move_stop_button": "Move stop button action",
+        "move_up_button": "Move up button action",
+        "preset_buttons": "Preset buttons",
+        "move_left": "Move left",
+        "move_right": "Move right"
+    }
+}

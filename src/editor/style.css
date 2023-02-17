@@ -1,0 +1,30 @@
+div.configRow {
+    margin-bottom: 1em;
+}
+div.configGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 2em;
+}
+div.editor-items-bar {
+    display: flex;
+}
+div.editor-items-bar paper-tabs {
+    width: 100%;
+}
+paper-tab[aria-selected="true"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: var(--mdc-theme-primary, #6200ee);
+}
+div.tab-divider {
+    width: 1px;
+    margin: 0px 4px;
+    height: var(--mdc-icon-button-size, 48px);
+    background: white;
+}

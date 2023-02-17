@@ -121,19 +121,118 @@ var __assign = (undefined && undefined.__assign) || function () {
     return MissingLocaleDataError;
 })(Error));
 
-var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function O(){return (O=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n]);}return e}).apply(this,arguments)}function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)},be=function(e,t,r,n,i){var a;if(i&&r.double_tap_action?a=r.double_tap_action:n&&r.hold_action?a=r.hold_action:!n&&r.tap_action&&(a=r.tap_action),a||(a={action:"more-info"}),!a.confirmation||a.confirmation.exemptions&&a.confirmation.exemptions.some(function(e){return e.user===t.user.id})||confirm(a.confirmation.text||"Are you sure you want to "+a.action+"?"))switch(a.action){case"more-info":(a.entity||r.entity||r.camera_image)&&(ne(e,"hass-more-info",{entityId:a.entity?a.entity:r.entity?r.entity:r.camera_image}),a.haptic&&le(a.haptic));break;case"navigate":a.navigation_path&&(de(0,a.navigation_path),a.haptic&&le(a.haptic));break;case"url":a.url_path&&window.open(a.url_path),a.haptic&&le(a.haptic);break;case"toggle":r.entity&&(ge(t,r.entity),a.haptic&&le(a.haptic));break;case"call-service":if(!a.service)return;var o=a.service.split(".",2),u=o[0],c=o[1],m=O({},a.service_data);"entity"===m.entity_id&&(m.entity_id=r.entity),t.callService(u,c,m,a.target),a.haptic&&le(a.haptic);break;case"fire-dom-event":ne(e,"ll-custom",a),a.haptic&&le(a.haptic);}};
+var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function O(){return (O=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n]);}return e}).apply(this,arguments)}function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de$2=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)},be=function(e,t,r,n,i){var a;if(i&&r.double_tap_action?a=r.double_tap_action:n&&r.hold_action?a=r.hold_action:!n&&r.tap_action&&(a=r.tap_action),a||(a={action:"more-info"}),!a.confirmation||a.confirmation.exemptions&&a.confirmation.exemptions.some(function(e){return e.user===t.user.id})||confirm(a.confirmation.text||"Are you sure you want to "+a.action+"?"))switch(a.action){case"more-info":(a.entity||r.entity||r.camera_image)&&(ne(e,"hass-more-info",{entityId:a.entity?a.entity:r.entity?r.entity:r.camera_image}),a.haptic&&le(a.haptic));break;case"navigate":a.navigation_path&&(de$2(0,a.navigation_path),a.haptic&&le(a.haptic));break;case"url":a.url_path&&window.open(a.url_path),a.haptic&&le(a.haptic);break;case"toggle":r.entity&&(ge(t,r.entity),a.haptic&&le(a.haptic));break;case"call-service":if(!a.service)return;var o=a.service.split(".",2),u=o[0],c=o[1],m=O({},a.service_data);"entity"===m.entity_id&&(m.entity_id=r.entity),t.callService(u,c,m,a.target),a.haptic&&le(a.haptic);break;case"fire-dom-event":ne(e,"ll-custom",a),a.haptic&&le(a.haptic);}};
 
 // Material Design Icons v7.0.96
+var mdiArrowLeft = "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z";
+var mdiArrowRight = "M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z";
 var mdiChevronDown = "M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z";
 var mdiChevronUp = "M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z";
+var mdiDelete = "M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z";
+var mdiPlus = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
 var mdiStop = "M18,18H6V6H18V18Z";
 
+// GENERAL
+const HASSIO_CARD_ID = "shutter-row-dev";
+const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor-dev";
+const HASSIO_CARD_NAME = "Shutter Row";
+const VERSION = "0.3.0 rc1";
+
+// SVG PATHS
+const PATH_SHUTTER_100 =
+    "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15 M 8 18 L 12 18 L 16 18 L 16 19 L 16 20 L 12 20 L 8 20 L 8 19 Z";
+const PATH_SHUTTER_75 =
+    "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15";
+const PATH_SHUTTER_50 =
+    "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12";
+const PATH_SHUTTER_25 =
+    "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9";
+const PATH_SHUTTER_0 =
+    "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4";
+const PATH_SHUTTER_UP =
+    "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.86,12.5928l3.14,-3.13316l3.14,3.13316l0.96458,-0.96458l-4.10458,-4.10458l-4.10458,4.10458l0.96458,0.96458z";
+const PATH_SHUTTER_DOWN =
+    "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.72989,8.28425l3.27011,3.27011l3.27011,-3.27011l1.00454,1.01167l-4.27465,4.27465l-4.27465,-4.27465l1.00454,-1.01167z";
+
+/**
+ * Entities which are included
+ */
+const INCLUDED_DOMAINS = ["cover"];
+
+/**
+ * UI actions
+ */
+const UI_SCHEMA = [
+    { name: "tap_action", selector: { "ui-action": {} } },
+    { name: "double_tap_action", selector: { "ui-action": {} } },
+    { name: "hold_action", selector: { "ui-action": {} } },
+];
+
+/**
+ * Root form schema
+ */
+const ROOT_SCHEMA = [
+    {
+        type: "grid",
+        name: "",
+        schema: [
+            { name: "entity", selector: { entity: { domain: INCLUDED_DOMAINS } } },
+            { name: "name", selector: { text: {} } },
+        ],
+    },
+    {
+        type: "grid",
+        name: "",
+        schema: [
+            { name: "invert_position", selector: { boolean: {} } },
+            { name: "invert_position_label", selector: { boolean: {} } },
+            { name: "disable_position", selector: { boolean: {} } },
+            { name: "rtl_position", selector: { boolean: {} } },
+            { name: "state_color", selector: { boolean: {} } },
+            { name: "group", selector: { boolean: {} } },
+        ],
+    },
+    { name: "title_template", selector: { template: {} } },
+    { name: "position_template", selector: { template: {} } },
+    {
+        type: "grid",
+        name: "move_down_button",
+        schema: UI_SCHEMA,
+    },
+    {
+        type: "grid",
+        name: "move_down_button",
+        schema: UI_SCHEMA,
+    },
+    {
+        type: "grid",
+        name: "move_down_button",
+        schema: UI_SCHEMA,
+    },
+];
+
+/**
+ * Preset button schema
+ */
+const PRESET_SCHEMA = [
+    { name: "name", selector: { text: {} } },
+    { name: "icon", selector: { icon: {} } },
+    UI_SCHEMA,
+];
+
+/**
+ * Hold needed helper variables
+ */
 var HOLD_TIMER;
 var HOLD_ACTIVED = false;
 var HOLD_TIME = 500;
 
+/**
+ * On hold pointer down function
+ * @param {event} e
+ */
 function onHoldPointerDown(e) {
-    let timerDone = function() {
+    let timerDone = function () {
         HOLD_ACTIVED = true;
     };
     // Reset
@@ -143,8 +242,12 @@ function onHoldPointerDown(e) {
     HOLD_TIMER = setTimeout(timerDone, HOLD_TIME);
 }
 
+/**
+ * On hold pointer up function
+ * @param {event} e
+ */
 function onPointerUp(context, onClickCallback, onHoldCallback, e) {
-    if(HOLD_ACTIVED) {
+    if (HOLD_ACTIVED) {
         HOLD_ACTIVED = false;
         onHoldCallback.bind(context)(e);
     } else {
@@ -152,26 +255,116 @@ function onPointerUp(context, onClickCallback, onHoldCallback, e) {
     }
 }
 
+/**
+ * Create ripple element
+ * @returns html
+ */
 function getRippleElement() {
     let ripple = document.createElement("mwc-ripple");
     ripple.setAttribute("primary");
     return ripple;
 }
 
-// GENERAL
-const HASSIO_CARD_ID = "shutter-row";
-const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
-const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.0 rc1";
+/**
+ * Move element in array
+ * @param {Array} arr
+ * @param {int} fromIndex
+ * @param {int} toIndex
+ * @returns
+ */
+function moveElementInArray(arr, fromIndex, toIndex) {
+    let element = arr[fromIndex];
+    arr.splice(fromIndex, 1);
+    arr.splice(toIndex, 0, element);
+    return arr;
+}
 
-// SVG PATHS
-const PATH_SHUTTER_100 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15 M 8 18 L 12 18 L 16 18 L 16 19 L 16 20 L 12 20 L 8 20 L 8 19 Z";
-const PATH_SHUTTER_75 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12 M 8 15 L 12 15 L 16 15 L 16 16 L 16 17 L 12 17 L 8 17 L 8 16 L 8 15";
-const PATH_SHUTTER_50 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9 M 8 12 L 12 12 L 16 12 L 16 13 L 16 14 L 12 14 L 8 14 L 8 13 L 8 12";
-const PATH_SHUTTER_25 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4 M 8 9 L 12 9 L 16 9 L 16 10 L 16 11 L 12 11 L 8 11 L 8 10 L 8 9";
-const PATH_SHUTTER_0 = "M 3 4 L 12 4 L 21 4 L 21 6 L 21 8 L 20 8 L 19 8 L 19 14 L 19 20 L 18 20 L 17 20 L 17 14 L 17 8 L 12 8 L 7 8 L 7 14 L 7 20 L 6 20 L 5 20 L 5 14 L 5 8 L 4 8 L 3 8 L 3 6 L 3 4";
-const PATH_SHUTTER_UP = "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.86,12.5928l3.14,-3.13316l3.14,3.13316l0.96458,-0.96458l-4.10458,-4.10458l-4.10458,4.10458l0.96458,0.96458z";
-const PATH_SHUTTER_DOWN = "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.72989,8.28425l3.27011,3.27011l3.27011,-3.27011l1.00454,1.01167l-4.27465,4.27465l-4.27465,-4.27465l1.00454,-1.01167z";
+var editor$1 = {
+	invert_position: "Invert position value",
+	invert_position_label: "Invert open and closed status",
+	disable_position: "Hide position slider",
+	rtl_position: "Switch direction of the position slider",
+	group: "Group",
+	title_template: "Title template",
+	position_template: "Position label template",
+	move_down_button: "Move down button action",
+	move_stop_button: "Move stop button action",
+	move_up_button: "Move up button action",
+	preset_buttons: "Preset buttons",
+	move_left: "Move left",
+	move_right: "Move right"
+};
+var en = {
+	editor: editor$1
+};
+
+var en$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    editor: editor$1,
+    'default': en
+});
+
+var editor = {
+	invert_position: "Invertiere Positionswert",
+	invert_position_label: "Invertiere Positions Status",
+	disable_position: "Verstecke Positionslider",
+	rtl_position: "Vertausche Richtung des Positionslider",
+	group: "Gruppe",
+	title_template: "Titel template",
+	position_template: "Positionswert template",
+	move_down_button: "Runter Button Aktion",
+	move_stop_button: "Stopp Button Aktion",
+	move_up_button: "Hoch Button Aktion",
+	preset_buttons: "Voreinstellungs Buttons",
+	move_left: "Verschiebe nach links",
+	move_right: "Verschiebe nach rechts"
+};
+var de = {
+	editor: editor
+};
+
+var de$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    editor: editor,
+    'default': de
+});
+
+const DEFAULT_LANG = "en";
+
+/**
+ * Returns custom localizations
+ * @param {string} lang
+ * @returns Array
+ */
+function getLang(lang) {
+    switch (lang) {
+        case "en":
+            return en$1;
+        case "de":
+            return de$1;
+
+        default:
+            return en$1;
+    }
+}
+
+/**
+ * Customized localization
+ * @param {hass} hass
+ * @param {string} keys
+ * @returns string
+ */
+function customLocalize(hass, keys) {
+    let deepLookup = (keys, data) => {
+        let curKey = keys.pop();
+        if (!curKey in data) return false;
+        if (keys.length == 0) return data[curKey];
+        return deepLookup(keys, data[curKey]);
+    };
+    let lang = hass.locale.language ?? DEFAULT_LANG;
+
+    return deepLookup(keys.split(".").reverse(), getLang(lang));
+}
 
 function styleInject(css, ref) {
   if ( ref === void 0 ) ref = {};
@@ -200,8 +393,271 @@ function styleInject(css, ref) {
   }
 }
 
+var css_248z$1 = i$1`div.configRow {
+    margin-bottom: 1em;
+}
+div.configGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1em;
+    -moz-column-gap: 1em;
+         column-gap: 1em;
+    grid-row-gap: 2em;
+    row-gap: 2em;
+}
+div.editor-items-bar {
+    display: flex;
+}
+div.editor-items-bar paper-tabs {
+    width: 100%;
+}
+paper-tab[aria-selected="true"]::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #6200ee;
+    background-color: var(--mdc-theme-primary, #6200ee);
+}
+div.tab-divider {
+    width: 1px;
+    margin: 0px 4px;
+    height: 48px;
+    height: var(--mdc-icon-button-size, 48px);
+    background: white;
+}
+`;
+styleInject(css_248z$1);
+
+class ShutterRowEditor extends s {
+    /**
+     * Define properties to react
+     * @returns Array
+     */
+    static get properties() {
+        return {
+            hass: {},
+            config: {},
+            _config: {},
+            _preset_button_selected: Number,
+        };
+    }
+
+    /**
+     * Define CSS styles
+     * @returns CSS styles
+     */
+    static get styles() {
+        return css_248z$1;
+    }
+
+    /**
+     * Adds new preset button
+     */
+    _addPresetItem() {
+        // Check if defined, if not add one
+        if (!this._config) return;
+
+        if (!this._config.preset_buttons) {
+            this._preset_button_selected = 0;
+            this._config.preset_buttons = [{}];
+            return;
+        }
+
+        this._config.preset_buttons.push({});
+        ne(this, "config-changed", { config: this._config });
+        this._preset_button_selected = this._config.preset_buttons.length - 1;
+    }
+
+    /**
+     * Renders all items in the preset tab bar
+     * @returns html
+     */
+    renderPresetItemTabs() {
+        if (!this._config || !this._config.preset_buttons) return;
+
+        return this._config.preset_buttons.map(
+            (preset_button, index) => y` <paper-tab
+                class="iron-selected"
+                tabindex="${index}"
+                @click=${() => (this._preset_button_selected = index)}
+            >
+                ${index + 1}
+            </paper-tab>`
+        );
+    }
+
+    /**
+     * Renders preset editor form
+     * @returns html
+     */
+    renderPresetItemContent() {
+        if (!this._config || !this._config.preset_buttons || this._config.preset_buttons.length == 0) return;
+
+        return y` <ha-form
+            .hass=${this.hass}
+            .data=${this._config.preset_buttons[this._preset_button_selected]}
+            .schema=${PRESET_SCHEMA}
+            .computeLabel=${this._computeLabel}
+            @value-changed=${this._presetChanged}
+        ></ha-form>`;
+    }
+
+    /**
+     * Renders tab control button
+     * @returns html
+     */
+    renderPresetButtonsTabControls() {
+        let basicControls = y`<ha-icon-button
+            .label=${this.hass.localize("ui.components.area-picker.add_dialog.add")}
+            .path="${mdiPlus}"
+            @click=${this._addPresetItem}
+        ></ha-icon-button>`;
+
+        // Return only basic controls if preset buttons were not set
+        if (!this._config || !this._config.preset_buttons) return basicControls;
+        if (this._config.preset_buttons.length == 0) return basicControls;
+
+        // Define event listener
+        let onMoveLeftClick = () => {
+            if (this._preset_button_selected == 0) return;
+
+            this._config.preset_buttons = moveElementInArray(
+                this._config.preset_buttons,
+                this._preset_button_selected,
+                --this._preset_button_selected
+            );
+            ne(this, "config-changed", { config: this._config });
+        };
+        let onMoveRightClick = () => {
+            if (this._preset_button_selected >= this._config.preset_buttons.length - 1) return;
+
+            this._config.preset_buttons = moveElementInArray(
+                this._config.preset_buttons,
+                this._preset_button_selected,
+                ++this._preset_button_selected
+            );
+            ne(this, "config-changed", { config: this._config });
+        };
+        let onDeleteClick = () => {
+            // Select other tab
+            this._preset_button_selected = this._preset_button_selected == 0 ? 0 : this._preset_button_selected - 1;
+
+            this._config.preset_buttons.splice(this._preset_button_selected, 1);
+            ne(this, "config-changed", { config: this._config });
+        };
+
+        return y`
+            <ha-icon-button
+                .label=${customLocalize(this.hass, "editor.move_left")}
+                .path="${mdiArrowLeft}"
+                @click=${onMoveLeftClick}
+            ></ha-icon-button>
+            <ha-icon-button
+                .label=${customLocalize(this.hass, "editor.move_right")}
+                .path="${mdiArrowRight}"
+                @click=${onMoveRightClick}
+            ></ha-icon-button>
+            <ha-icon-button
+                .label=${this.hass.localize("ui.common.remove")}
+                .path="${mdiDelete}"
+                @click=${onDeleteClick}
+            ></ha-icon-button>
+            <div class="tab-divider"></div>
+            ${basicControls}
+        `;
+    }
+
+    /**
+     * Render preset button editor part
+     * @returns html
+     */
+    renderPresetButtons() {
+        return y`
+            <h3>${customLocalize(this.hass, "editor.preset_buttons")}</h3>
+
+            <div class="editor-items-bar">
+                <paper-tabs scrollable="" tabindex="0" selected="${this._preset_button_selected}" dir="ltr">
+                    ${this.renderPresetItemTabs()}
+                </paper-tabs>
+
+                ${this.renderPresetButtonsTabControls()}
+            </div>
+            <div class="editor-item-content">${this.renderPresetItemContent()}</div>
+        `;
+    }
+
+    /**
+     * Main render function
+     * @returns html
+     */
+    render() {
+        if (!this.hass || !this._config) {
+            return y``;
+        }
+
+        return y`
+            <ha-form
+                .hass=${this.hass}
+                .data=${this._config}
+                .schema=${ROOT_SCHEMA}
+                .computeLabel=${this._computeLabel}
+                @value-changed=${this._valueChanged}
+            ></ha-form>
+            ${this.renderPresetButtons()}
+        `;
+    }
+
+    /**
+     * HA function on editor config set
+     * @param {Array} config
+     */
+    setConfig(config) {
+        this._config = config;
+    }
+
+    /**
+     * HA editor form on value changed
+     * @param {*} ev
+     */
+    _valueChanged(ev) {
+        ne(this, "config-changed", { config: ev.detail.value });
+    }
+
+    /**
+     * HA editor preset form on value changed
+     * @param {*} ev
+     */
+    _presetChanged(ev) {
+        this._config.preset_buttons[this._preset_button_selected] = ev.detail.value;
+        ne(this, "config-changed", { config: this._config });
+    }
+
+    /**
+     * Computes localized label
+     * @param {*} schema
+     * @returns String
+     */
+    _computeLabel(schema) {
+        let customLocal = customLocalize(this.hass, "editor." + schema.name);
+        if (customLocal) return customLocal;
+        return this.hass.localize(`ui.panel.lovelace.editor.card.generic.${schema.name}`);
+    }
+}
+
+// Define HTML element
+customElements.define(HASSIO_CARD_EDITOR_ID, ShutterRowEditor);
+window.customCards = window.customCards || [];
+window.customCards.push({
+    type: HASSIO_CARD_ID,
+    name: HASSIO_CARD_NAME,
+    preview: false, // Optional - defaults to false
+});
+
 var css_248z = i$1`.disabled,
-div.controls[state="unavailable"] ha-icon  {
+div.controls[state="unavailable"] ha-icon {
     color: var(--disabled-text-color);
     cursor: default;
 }
@@ -274,200 +730,9 @@ div.card-row.preset-buttons div.button {
 }
 div.card-row.preset-buttons div.button span {
     margin-left: 0.25em;
-}`;
-styleInject(css_248z);
-
-function setValue(obj, path, value) {
-    const pathFragments = path.split('.');
-    let o = obj;
-    while (pathFragments.length - 1) {
-        var fragment = pathFragments.shift();
-        if (!o.hasOwnProperty(fragment)) o[fragment] = {};
-        o = o[fragment];
-    }
-    o[pathFragments[0]] = value;
 }
-
-const cloneDeep = (obj) => JSON.parse(JSON.stringify(obj));
-
-const includeDomains = ["cover"];
-
-class ShutterRowEditor extends s {
-
-    static get properties() {
-        return {
-            hass: {},
-            config: {}
-        };
-    }
-
-    setConfig(config) {
-        this.config = config;
-        console.log(config);
-    }
-
-    getConfigValue(config) {
-        if(!this.config[config])
-            return "";
-        return this.config[config];
-    }
-
-    get allCoverEntities() {
-        let entitiyIds = [];
-        Object.keys(this.hass.states).forEach(key => {
-            if(key.split(".")[0] == "cover")
-                return;
-            entitiyIds.push(key);
-        });
-        return entitiyIds;
-    }
-
-    valueChanged(ev) {
-        if (!this.config || !this.hass) {
-          return
-        }
-        const { target } = ev;
-        const copy = cloneDeep(this.config);
-        if (target.configValue) {
-          if (target.value === '') {
-            delete copy[target.configValue];
-          } else {
-            setValue(
-              copy,
-              target.configValue,
-              target.checked !== undefined ? target.checked : target.value
-            );
-          }
-        }
-        ne(this, 'config-changed', { config: copy });
-    }
-
-    static get styles() {
-        return i$1`
-            div.configRow {
-                margin-bottom: 1em;
-            }
-            div.configGrid {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
-                column-gap: 1em;
-                row-gap: 2em;
-            }
-        `;
-    }
-
-    render() {
-        return y`
-        <div>
-            <div class="configRow">
-                <ha-entity-picker
-                    label="Entity (required)"
-                    .hass=${this.hass}
-                    .configValue=${'entity'}
-                    .value=${this.config.entity}
-                    .includeDomains=${includeDomains}
-                    @change="${this.valueChanged}"
-                    allow-custom-entity
-                >
-                </ha-entity-picker>
-            </div>
-
-            <div class="configGrid configRow">
-                <ha-textfield
-                    type="text"
-                    label="Name"
-                    .configValue="${"name"}"
-                    .value=${this.getConfigValue("name")}
-                    @change=${this.valueChanged}
-                >
-                </ha-textfield>
-
-                <ha-textfield
-                    type="text"
-                    label="Title template"
-                    .configValue="${"title_template"}"
-                    .value=${this.getConfigValue("title_template")}
-                    @change=${this.valueChanged}
-                >
-                </ha-textfield>
-
-                <ha-textfield
-                    type="text"
-                    label="Position template"
-                    .configValue="${"position_template"}"
-                    .value=${this.getConfigValue("position_template")}
-                    @change=${this.valueChanged}
-                >
-                </ha-textfield>
-            </div>
-
-            <div class="configGrid configRow">
-                <ha-formfield label="Inverts position">
-                    <ha-switch
-                        .configValue="${"invert_position"}"
-                        .checked=${this.getConfigValue("invert_position")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-
-                <ha-formfield label="Inverts position label">
-                    <ha-switch
-                        .configValue="${"invert_position_label"}"
-                        .checked=${this.getConfigValue("invert_position_label")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-
-                <ha-formfield label="Disables position slider">
-                    <ha-switch
-                        .configValue="${"disable_position"}"
-                        .checked=${this.getConfigValue("disable_position")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-
-                <ha-formfield label="Switches position slider direction">
-                    <ha-switch
-                        .configValue="${"rtl_position"}"
-                        .checked=${this.getConfigValue("rtl_position")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-
-                <ha-formfield label="Enables state icon coloring">
-                    <ha-switch
-                        .configValue="${"state_color"}"
-                        .checked=${this.getConfigValue("state_color")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-
-                <ha-formfield label="Enables group rendering">
-                    <ha-switch
-                        .configValue="${"group"}"
-                        .checked=${this.getConfigValue("group")}
-                        @change=${this.valueChanged}
-                    >
-                    </ha-switch>
-                </ha-formfield>
-            </div>
-        </div>`;
-    }    
-  }
-
-// Define HTML element
-customElements.define(HASSIO_CARD_EDITOR_ID, ShutterRowEditor);
-window.customCards = window.customCards || [];
-window.customCards.push({
-    type: HASSIO_CARD_ID,
-    name: HASSIO_CARD_NAME,
-    preview: false, // Optional - defaults to false
-});
+`;
+styleInject(css_248z);
 
 class ShutterRow extends s {
     constructor() {
@@ -477,11 +742,10 @@ class ShutterRow extends s {
         this.templated = {};
     }
 
-    /*
-        =========================================
-        = Lovelace needed functions
-        =========================================
-    */
+    /**
+     * Define properties to react
+     * @returns Array
+     */
     static get properties() {
         return {
             hass: Object,
@@ -489,37 +753,42 @@ class ShutterRow extends s {
             templated_changed: Boolean, // Because 'templated' as variable didn't rerender, there is a boolean which flips on every template changed
         };
     }
-    /*
-         Returns CSS style
-    */
+
+    /**
+     * Define CSS styles
+     * @returns CSS styles
+     */
     static get styles() {
         return css_248z;
     }
 
-    /*
-        Getter function for shutter row editor element
-    */
+    /**
+     * Getter function for shutter row editor element
+     * @returns html
+     */
     static getConfigElement() {
         return document.createElement(HASSIO_CARD_EDITOR_ID);
     }
 
-    /*
-        Lovelace function to get card height
-    */
+    /**
+     * Lovelace function to get card height
+     * @returns int
+     */
     getCardSize() {
         return 2;
     }
-    /*
-        On user config update
-    */
+
+    /**
+     * HA function on editor config set
+     * @param {Array} config
+     */
     setConfig(config) {
-        let getConfigAttribute = (attribute, defaultValue, array=this._config) => {
-            if(!array)
-                return;
+        let getConfigAttribute = (attribute, defaultValue, array = this._config) => {
+            if (!array) return;
             return attribute in array ? array[attribute] : defaultValue;
         };
         if (!config.entity) {
-            throw new Error('You need to define an entity');
+            throw new Error("You need to define an entity");
         }
 
         this._config = config;
@@ -528,7 +797,8 @@ class ShutterRow extends s {
             entity: config.entity,
             name: getConfigAttribute("name", false),
             invert_position: getConfigAttribute("invert_position", false),
-            invert_position_label: getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
+            invert_position_label:
+                getConfigAttribute("invert_position_label", false) || getConfigAttribute("invert_position", false),
             disable_position: getConfigAttribute("disable_position", false),
             rtl_position: getConfigAttribute("rtl_position", false),
             state_color: getConfigAttribute("state_color", false),
@@ -537,44 +807,65 @@ class ShutterRow extends s {
             position_template: getConfigAttribute("position_template", false),
             move_down_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_down_button", false)),
-                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_down_button", false)),
+                double_tap_action: getConfigAttribute(
+                    "double_tap_action",
+                    false,
+                    getConfigAttribute("move_down_button", false)
+                ),
                 hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_down_button", false)),
             },
             move_stop_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_stop_button", false)),
-                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_stop_button", false)),
+                double_tap_action: getConfigAttribute(
+                    "double_tap_action",
+                    false,
+                    getConfigAttribute("move_stop_button", false)
+                ),
                 hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_stop_button", false)),
             },
             move_up_button: {
                 tap_action: getConfigAttribute("tap_action", false, getConfigAttribute("move_up_button", false)),
-                double_tap_action: getConfigAttribute("double_tap_action", false, getConfigAttribute("move_up_button", false)),
+                double_tap_action: getConfigAttribute(
+                    "double_tap_action",
+                    false,
+                    getConfigAttribute("move_up_button", false)
+                ),
                 hold_action: getConfigAttribute("hold_action", false, getConfigAttribute("move_up_button", false)),
             },
             preset_buttons: getConfigAttribute("preset_buttons", false),
         };
         this.entityId = this.config.entity;
     }
-    /*
-        Calls custom action if defined
-    */
+
+    /**
+     * Calls custom action if defined
+     * @param {String} config
+     * @param {action} action
+     * @returns
+     */
     callCustomAction(config, action) {
         // Check if defined
-        if(!config[action])
-            return;
+        if (!config[action]) return;
 
         // Run custom action
         // Run function action = "set-position"
-        if(config[action].action == "set-position" && config[action]["position"])
+        if (config[action].action == "set-position" && config[action]["position"])
             this.hass.callService("cover", "set_cover_position", {
                 entity_id: this.entityId,
-                position: this.config.invert_position ? (100 - config[action]["position"]) : config[action]["position"],
+                position: this.config.invert_position ? 100 - config[action]["position"] : config[action]["position"],
             });
 
         // Call HA handle function
-        switch(action) {
-            case "tap_action": be(this, this.hass, config, false, false); break;
-            case "double_tap_action": be(this, this.hass, config, false, true); break;
-            case "hold_action": be(this, this.hass, config, true, false); break;
+        switch (action) {
+            case "tap_action":
+                be(this, this.hass, config, false, false);
+                break;
+            case "double_tap_action":
+                be(this, this.hass, config, false, true);
+                break;
+            case "hold_action":
+                be(this, this.hass, config, true, false);
+                break;
         }
     }
 
@@ -584,146 +875,158 @@ class ShutterRow extends s {
         =========================================
     */
 
-    /*
-        Get card title
-    */
+    /**
+     * Get card title
+     * @returns string
+     */
     getName() {
         // Check for custom template
-        if(this.getTemplateText("titleLabel"))
-            return this.getTemplateText("titleLabel");
+        if (this.getTemplateText("titleLabel")) return this.getTemplateText("titleLabel");
 
-        if(this.config.name)
-            return this.config.name;
+        if (this.config.name) return this.config.name;
         return this.state.attributes.friendly_name;
     }
-    /*
-        Get position value
-    */
+
+    /**
+     * Get position value
+     * @returns string
+     */
     getPosition() {
-        if(this.config.invert_position)
-            return (100 - this.state.attributes.current_position);
+        if (this.config.invert_position) return 100 - this.state.attributes.current_position;
         return this.state.attributes.current_position;
     }
-    /*
-        Get position text for label
-    */
+
+    /**
+     * Get position text for label
+     * @returns string
+     */
     getPositionLabel() {
         // Check for custom template
-        if(this.getTemplateText("positionLabel"))
-            return this.getTemplateText("positionLabel");
+        if (this.getTemplateText("positionLabel")) return this.getTemplateText("positionLabel");
 
-        if( (this.config.invert_position_label && this.getPosition() == 100) ||
-                (!this.config.invert_position_label && this.getPosition() == 0) )
+        if (
+            (this.config.invert_position_label && this.getPosition() == 100) ||
+            (!this.config.invert_position_label && this.getPosition() == 0)
+        )
             return this.hass.localize("component.cover.state._.closed");
-        if( (this.config.invert_position_label && this.getPosition() == 0) ||
-                (!this.config.invert_position_label && this.getPosition() == 100) )
+        if (
+            (this.config.invert_position_label && this.getPosition() == 0) ||
+            (!this.config.invert_position_label && this.getPosition() == 100)
+        )
             return this.hass.localize("component.cover.state._.open");
         return `${this.getPosition()} %`;
     }
-    /*
-        Sets meta for variables
-    */
-    setMeta(force=false) {
+
+    /**
+     * Sets meta for variables
+     * @param {bool} force
+     * @returns string
+     */
+    setMeta(force = false) {
         // Only on change
-        if(this.state == this.hass.states[this.entityId] && !force)
-            return;
+        if (this.state == this.hass.states[this.entityId] && !force) return;
         this.state = this.hass.states[this.entityId];
-        this.stateDisplay = this.state ? this.state.state : 'unavailable';
-    } 
-    /*
-        Checks if cover is fully opened
-    */
+        this.stateDisplay = this.state ? this.state.state : "unavailable";
+    }
+
+    /**
+     * Checks if cover is fully opened
+     * @returns bool
+     */
     upReached() {
-        if(!this.config.invert_position_label && this.getPosition() == 100 ||
-        this.config.invert_position_label && this.getPosition() == 0)
-                return true;
+        if (
+            (!this.config.invert_position_label && this.getPosition() == 100) ||
+            (this.config.invert_position_label && this.getPosition() == 0)
+        )
+            return true;
         return false;
     }
-    /*
-        Checks if cover is fully closed
-    */
+
+    /**
+     * Checks if cover is fully closed
+     * @returns bool
+     */
     downReached() {
-        if(this.config.invert_position_label && this.getPosition() == 100 ||
-            !this.config.invert_position_label && this.getPosition() == 0)
-                return true;
+        if (
+            (this.config.invert_position_label && this.getPosition() == 100) ||
+            (!this.config.invert_position_label && this.getPosition() == 0)
+        )
+            return true;
         return false;
     }
-    /*
-        Returns generalized moving state, returns false if not moving
-    */
+
+    /**
+     * Returns generalized moving state, returns false if not moving
+     * @returns bool
+     */
     currentMoving() {
-        if(this.stateDisplay == "opening" || this.state.attributes.moving == "UP")
-            return "up";
-        if(this.stateDisplay == "closing" || this.state.attributes.moving == "DOWN")
-            return "down";
+        if (this.stateDisplay == "opening" || this.state.attributes.moving == "UP") return "up";
+        if (this.stateDisplay == "closing" || this.state.attributes.moving == "DOWN") return "down";
         return false;
     }
-    /*
-        Render entity icon
-    */ 
+
+    /**
+     * Render entity icon
+     * @returns html
+     */
     renderIcon() {
         let getIconElementById = (icon) => {
-            return y`<ha-icon-button icon="${icon}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+            return y`<ha-icon-button icon="${icon}" class="${
+                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
+                    ? "active-icon"
+                    : ""
+            }"></ha-icon>`;
         };
         let getIconElementByPath = (path) => {
-            return y`<ha-icon-button path="${path}" class="${(this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed") ? "active-icon" : ""}"></ha-icon>`;
+            return y`<ha-icon-button path="${path}" class="${
+                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
+                    ? "active-icon"
+                    : ""
+            }"></ha-icon>`;
         };
 
         // Check for moving
-        if(this.currentMoving() == "up")
-            return getIconElementByPath(PATH_SHUTTER_UP);
-        if(this.currentMoving() == "down")
-            return getIconElementByPath(PATH_SHUTTER_DOWN);
+        if (this.currentMoving() == "up") return getIconElementByPath(PATH_SHUTTER_UP);
+        if (this.currentMoving() == "down") return getIconElementByPath(PATH_SHUTTER_DOWN);
 
         // Check for entity defined icon
-        if(this.state.attributes.icon != undefined)
-            return getIconElementById(this.state.attributes.icon);
+        if (this.state.attributes.icon != undefined) return getIconElementById(this.state.attributes.icon);
         this.getPosition();
 
         // Use dynamic icon
-        if(this.downReached())
-            return getIconElementByPath(PATH_SHUTTER_100);
-        if(this.getPosition() > 66)
-            return getIconElementByPath(PATH_SHUTTER_75);
-        if(this.getPosition() > 33)
-            return getIconElementByPath(PATH_SHUTTER_50);
-        if(this.getPosition() > 0)
-            return getIconElementByPath(PATH_SHUTTER_25);
+        if (this.downReached()) return getIconElementByPath(PATH_SHUTTER_100);
+        if (this.getPosition() > 66) return getIconElementByPath(PATH_SHUTTER_75);
+        if (this.getPosition() > 33) return getIconElementByPath(PATH_SHUTTER_50);
+        if (this.getPosition() > 0) return getIconElementByPath(PATH_SHUTTER_25);
 
         return getIconElementByPath(PATH_SHUTTER_0);
     }
-    /*
-        Render first row within card content
-    */
+
+    /**
+     * Render first row within card content
+     * @returns html
+     */
     renderFirstRow() {
         let moveUpDisabled = () => {
-            if(this.stateDisplay == "unavailable")
-                return true;
-            if(this.upReached() || this.currentMoving() == "up")
-                return true;
+            if (this.stateDisplay == "unavailable") return true;
+            if (this.upReached() || this.currentMoving() == "up") return true;
             return false;
         };
         let moveStopDisabled = () => {
-            if(this.stateDisplay == "unavailable")
-                return true;
-            if(this.state.attributes.moving == "STOP")
-                return true;
+            if (this.stateDisplay == "unavailable") return true;
+            if (this.state.attributes.moving == "STOP") return true;
             return false;
         };
         let moveDownDisabled = () => {
-            if(this.stateDisplay == "unavailable")
-                return true;
-            if(this.downReached() || this.currentMoving() == "down")
-                return true;
+            if (this.stateDisplay == "unavailable") return true;
+            if (this.downReached() || this.currentMoving() == "down") return true;
             return false;
         };
 
         return y`
             <div class="card-row first-row">
-                <div class="entity-icon">
-                    ${this.renderIcon()}
-                </div>
-                
+                <div class="entity-icon">${this.renderIcon()}</div>
+
                 <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
                     <ha-icon-button
@@ -732,7 +1035,8 @@ class ShutterRow extends s {
                         .disabled=${moveUpDisabled()}
                         @dblclick="${this.onMoveUpDoubleClick}"
                         @pointerdown="${onHoldPointerDown}"
-                        @pointerup="${this.onMoveUpPointerUp}">
+                        @pointerup="${this.onMoveUpPointerUp}"
+                    >
                     </ha-icon-button>
                     <ha-icon-button
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
@@ -740,7 +1044,8 @@ class ShutterRow extends s {
                         .disabled=${moveStopDisabled()}
                         @dblclick="${this.onMoveStopDoubleClick}"
                         @pointerdown="${onHoldPointerDown}"
-                        @pointerup="${this.onMoveStopPointerUp}">
+                        @pointerup="${this.onMoveStopPointerUp}"
+                    >
                     </ha-icon-button>
                     <ha-icon-button
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.close_cover")}
@@ -748,44 +1053,57 @@ class ShutterRow extends s {
                         .disabled=${moveDownDisabled()}
                         @dblclick="${this.onMoveDownDoubleClick}"
                         @pointerdown="${onHoldPointerDown}"
-                        @pointerup="${this.onMoveDownPointerUp}">
+                        @pointerup="${this.onMoveDownPointerUp}"
+                    >
                     </ha-icon-button>
                 </div>
             </div>
         `;
     }
-    /*
-        Render second row within card content
-    */
+
+    /**
+     *  Render second row within card content
+     * @returns html
+     */
     renderSecondRow() {
         return y`
             <div class="card-row second-row">
-                <ha-slider ignore-bar-touch="" min="0" max="100" value=${this.getPosition()} step="5" pin dir="${this.config.rtl_position ? "rtl": "ltr"}" role="slider" @change="${this.onSliderChange}"></ha-slider>
+                <ha-slider
+                    ignore-bar-touch=""
+                    min="0"
+                    max="100"
+                    value=${this.getPosition()}
+                    step="5"
+                    pin
+                    dir="${this.config.rtl_position ? "rtl" : "ltr"}"
+                    role="slider"
+                    @change="${this.onSliderChange}"
+                ></ha-slider>
                 <div class="infos">
                     <span class="position">${this.getPositionLabel()}</span>
                 </div>
             </div>
         `;
     }
-    /*
-        Render presets row within card content
-    */
+
+    /**
+     * Render presets row within card content
+     * @returns html
+     */
     renderPresetsRow() {
-        if(!this.config.preset_buttons)
-            return;
+        if (!this.config.preset_buttons) return;
         let presetsHtml = [];
-        this.config.preset_buttons.forEach(presetConfig => {
+        this.config.preset_buttons.forEach((presetConfig) => {
             presetsHtml.push(this.renderPreset(presetConfig));
         });
-        return y`
-            <div class="card-row preset-buttons">
-               ${presetsHtml}
-            </div>
-        `;
+        return y` <div class="card-row preset-buttons">${presetsHtml}</div> `;
     }
-    /*
-        Render one preset for the preset row
-    */
+
+    /**
+     * Render one preset for the preset row
+     * @param {Array} presetConfig
+     * @returns html
+     */
     renderPreset(presetConfig) {
         // Ripple effect
         let ripple = getRippleElement();
@@ -809,46 +1127,47 @@ class ShutterRow extends s {
         };
 
         return y`
-            <div class="button" @dblclick="${onDoubleClick}" @pointerdown="${onPointerDownFunc}" @pointerup="${onPointerUpFunc}">
+            <div
+                class="button"
+                @dblclick="${onDoubleClick}"
+                @pointerdown="${onPointerDownFunc}"
+                @pointerup="${onPointerUpFunc}"
+            >
                 <ha-icon icon="${presetConfig.icon}"></ha-icon>
                 <span>${presetConfig.name}</span>
                 ${ripple}
             </div>
         `;
     }
-    /*
-        Render card content
-    */
-    renderContent() {
-        if(this.config.disable_position)
-            return y`
-                ${this.renderFirstRow()}
-                ${this.renderPresetsRow()}
-            `;
 
-        return y`
-            ${this.renderFirstRow()}
-            ${this.renderSecondRow()}
-            ${this.renderPresetsRow()}
-        `;
+    /**
+     * Render card content
+     * @returns html
+     */
+    renderContent() {
+        if (this.config.disable_position) return y` ${this.renderFirstRow()} ${this.renderPresetsRow()} `;
+
+        return y` ${this.renderFirstRow()} ${this.renderSecondRow()} ${this.renderPresetsRow()} `;
     }
-    /*
-        Adds template listener
-    */
+
+    /**
+     * Adds template listener
+     * @param {String} attribute
+     * @param {String} template
+     */
     addTemplate(attribute, template) {
         // Check if already defined
-        if(attribute in this.templated)
-            return;
+        if (attribute in this.templated) return;
 
         // Define variables
         let params = {};
         let variables = {
             entity: this.entityId,
-            hash: location.hash.substr(1) || ' ',
+            hash: location.hash.substr(1) || " ",
             ...params.variables,
         };
         var context = this;
-        let onChange = function(result) {
+        let onChange = function (result) {
             context.templated[attribute] = result;
             context.templated_changed = !context.templated_changed;
         };
@@ -861,49 +1180,46 @@ class ShutterRow extends s {
             variables,
         });
     }
-    /*
-        Gets rendered template text
-    */
+
+    /**
+     * Gets rendered template text
+     * @param {string} attribute
+     * @returns string
+     */
     getTemplateText(attribute) {
-        if(attribute in this.templated == false)
-            return false;
-        if(this.templated.attribute)
-            return false;
+        if (attribute in this.templated == false) return false;
+        if (this.templated.attribute) return false;
         return this.templated[attribute].result;
     }
-    /*
-        Before rendering html
-    */
+
+    /**
+     * Before rendering html
+     */
     preRender() {
         // Add template renderer
         let addConfigTemplate = (configAttribute, templateId) => {
             let configValue = this.config[configAttribute];
-            if(configValue)
-                this.addTemplate(templateId, configValue);
+            if (configValue) this.addTemplate(templateId, configValue);
         };
 
         addConfigTemplate("position_template", "positionLabel");
         addConfigTemplate("title_template", "titleLabel");
     }
-    /*
-        Render lovelace card
-    */
+
+    /**
+     * Render lovelace card
+     * @returns html
+     */
     render() {
         this.preRender();
         this.setMeta();
 
         // If card is part of group, root <ha-card> element is not needed
-        if(this.config.group)
-            return this.renderContent();
-        
-        // Render card with <ha-card> element
-        return y`
-            <ha-card>
-                ${this.renderContent()}
-            </ha-card>
-        `;
-    }
+        if (this.config.group) return this.renderContent();
 
+        // Render card with <ha-card> element
+        return y` <ha-card> ${this.renderContent()} </ha-card> `;
+    }
 
     /*
         =========================================
@@ -911,27 +1227,28 @@ class ShutterRow extends s {
         =========================================
     */
 
-    /*
-        Get all important DOM elements
-    */
+    /**
+     *  Get all important DOM elements
+     * @returns Array
+     */
     _getElements() {
         return {
             controls: this.renderRoot.querySelector("div.card-row.first-row div.controls"),
             slider: this.renderRoot.querySelector("div.card-row.second-row ha-slider"),
-        }
+        };
     }
-    /*
-        On move up pointer up
-    */
+
+    /**
+     * On move up pointer up
+     */
     onMoveUpPointerUp() {
         let onClickCallback = (e) => {
-            if(this.config.move_up_button && this.config.move_up_button.tap_action) {
+            if (this.config.move_up_button && this.config.move_up_button.tap_action) {
                 this.callCustomAction(this.config.move_up_button, "tap_action");
                 return;
             }
             // Run default action
-            if(this.upReached())
-                return;
+            if (this.upReached()) return;
             this.hass.callService("cover", "open_cover", {
                 entity_id: this.entityId,
             });
@@ -941,24 +1258,25 @@ class ShutterRow extends s {
         };
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    /*
-        On move up double click
-    */
+
+    /**
+     *  On move up double click
+     */
     onMoveUpDoubleClick() {
         this.callCustomAction(this.config.move_up_button, "double_tap_action");
     }
-    /*
-        On move stop pointer up
-    */
+
+    /**
+     * On move stop pointer up
+     */
     onMoveStopPointerUp() {
         let onClickCallback = (e) => {
-            if(this.config.move_stop_button && this.config.move_stop_button.tap_action) {
+            if (this.config.move_stop_button && this.config.move_stop_button.tap_action) {
                 this.callCustomAction(this.config.move_stop_button, "tap_action");
                 return;
             }
             // Run default action
-            if(this.state.attributes.moving == "STOP")
-                return;
+            if (this.state.attributes.moving == "STOP") return;
             this.hass.callService("cover", "stop_cover", {
                 entity_id: this.entityId,
             });
@@ -968,24 +1286,25 @@ class ShutterRow extends s {
         };
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    /*
-        On move down double click
-    */
+
+    /**
+     * On move down double click
+     */
     onMoveStopDoubleClick() {
         this.callCustomAction(this.config.move_stop_button, "double_tap_action");
     }
-    /*
-        On move down pointer up
-    */
+
+    /**
+     * On move down pointer up
+     */
     onMoveDownPointerUp() {
         let onClickCallback = (e) => {
-            if(this.config.move_down_button && this.config.move_down_button.tap_action) {
+            if (this.config.move_down_button && this.config.move_down_button.tap_action) {
                 this.callCustomAction(this.config.move_down_button, "tap_action");
                 return;
             }
             // Run default action
-            if(this.downReached())
-                return;
+            if (this.downReached()) return;
             this.hass.callService("cover", "close_cover", {
                 entity_id: this.entityId,
             });
@@ -995,36 +1314,43 @@ class ShutterRow extends s {
         };
         onPointerUp(this, onClickCallback, onHoldCallback);
     }
-    /*
-        On move down double click
-    */
+
+    /**
+     * On move down double click
+     */
     onMoveDownDoubleClick() {
         this.callCustomAction(this.config.move_down_button, "double_tap_action");
     }
-    /*
-        On position input change
-    */
+
+    /**
+     * On position input change
+     */
     onSliderChange() {
         let elements = this._getElements();
         let value = parseInt(elements.slider.value);
-        if(value == this.getPosition())
-            return;
+        if (value == this.getPosition()) return;
         this.hass.callService("cover", "set_cover_position", {
             entity_id: this.entityId,
-            position: this.config.invert_position ? (100 - value) : value,
+            position: this.config.invert_position ? 100 - value : value,
         });
     }
-    /*
-        Open HA more info
-    */
+
+    /**
+     * Open HA more info
+     */
     moreInfo() {
         let entityId = this.config.entity;
-        ne(this, 'hass-more-info', {
-            entityId,
-        }, {
-            bubbles: false,
-            composed: true,
-        });
+        ne(
+            this,
+            "hass-more-info",
+            {
+                entityId,
+            },
+            {
+                bubbles: false,
+                composed: true,
+            }
+        );
     }
 }
 

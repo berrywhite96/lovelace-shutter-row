@@ -1,0 +1,17 @@
+{
+    "editor": {
+        "invert_position": "Invertiere Positionswert",
+        "invert_position_label": "Invertiere Positions Status",
+        "disable_position": "Verstecke Positionslider",
+        "rtl_position": "Vertausche Richtung des Positionslider",
+        "group": "Gruppe",
+        "title_template": "Titel template",
+        "position_template": "Positionswert template",
+        "move_down_button": "Runter Button Aktion",
+        "move_stop_button": "Stopp Button Aktion",
+        "move_up_button": "Hoch Button Aktion",
+        "preset_buttons": "Voreinstellungs Buttons",
+        "move_left": "Verschiebe nach links",
+        "move_right": "Verschiebe nach rechts"
+    }
+}
