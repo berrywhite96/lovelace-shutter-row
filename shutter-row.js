@@ -133,10 +133,10 @@ var mdiPlus = "M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z";
 var mdiStop = "M18,18H6V6H18V18Z";
 
 // GENERAL
-const HASSIO_CARD_ID = "shutter-row-dev";
-const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor-dev";
+const HASSIO_CARD_ID = "shutter-row";
+const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.0 rc1";
+const VERSION = "0.3.0 rc2";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
