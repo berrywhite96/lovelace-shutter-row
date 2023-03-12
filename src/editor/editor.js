@@ -2,7 +2,7 @@ import { LitElement, html } from "lit";
 import { fireEvent } from "custom-card-helpers";
 import { mdiArrowLeft, mdiArrowRight, mdiDelete, mdiPlus } from "@mdi/js";
 import { HASSIO_CARD_ID, HASSIO_CARD_EDITOR_ID, HASSIO_CARD_NAME } from "../const.js";
-import { ROOT_SCHEMA, PRESET_SCHEMA } from "./editor_schema.js";
+import { getRootSchema, PRESET_SCHEMA } from "./editor_schema.js";
 import { moveElementInArray } from "../helpers.js";
 import { customLocalize } from "../localize.js";
 import style from "./style.css";
@@ -178,7 +178,7 @@ class ShutterRowEditor extends LitElement {
             <ha-form
                 .hass=${this.hass}
                 .data=${this._config}
-                .schema=${ROOT_SCHEMA}
+                .schema=${getRootSchema(this.hass)}
                 .computeLabel=${this._computeLabel}
                 @value-changed=${this._valueChanged}
             ></ha-form>

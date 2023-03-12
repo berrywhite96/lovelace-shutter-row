@@ -1,3 +1,5 @@
+import { customLocalize } from "../localize";
+
 /**
  * Entities which are included
  */
@@ -15,7 +17,7 @@ export const UI_SCHEMA = [
 /**
  * Root form schema
  */
-export const ROOT_SCHEMA = [
+export const getRootSchema = (hass) => [
     {
         type: "grid",
         name: "",
@@ -39,18 +41,24 @@ export const ROOT_SCHEMA = [
     { name: "title_template", selector: { template: {} } },
     { name: "position_template", selector: { template: {} } },
     {
-        type: "grid",
-        name: "move_down_button",
+        type: "expandable",
+        name: "move_up_button",
+        title: customLocalize(hass, "editor.move_up_button_expandable"),
+        icon: "mdi:arrow-up",
         schema: UI_SCHEMA,
     },
     {
-        type: "grid",
-        name: "move_down_button",
+        type: "expandable",
+        name: "move_stop_button",
+        title: customLocalize(hass, "editor.move_stop_button_expandable"),
+        icon: "mdi:stop-circle-outline",
         schema: UI_SCHEMA,
     },
     {
-        type: "grid",
+        type: "expandable",
         name: "move_down_button",
+        title: customLocalize(hass, "editor.move_down_button_expandable"),
+        icon: "mdi:arrow-down",
         schema: UI_SCHEMA,
     },
 ];

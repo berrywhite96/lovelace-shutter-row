@@ -12,6 +12,9 @@
         "move_up_button": "Hoch Button Aktion",
         "preset_buttons": "Voreinstellungs Buttons",
         "move_left": "Verschiebe nach links",
-        "move_right": "Verschiebe nach rechts"
+        "move_right": "Verschiebe nach rechts",
+        "move_up_button_expandable": "Aufwärts Button benutzerdefinierte Aktion",
+        "move_stop_button_expandable": "Stopp Button benutzerdefinierte Aktion",
+        "move_down_button_expandable": "Abwärts Button benutzerdefinierte Aktion"
     }
 }

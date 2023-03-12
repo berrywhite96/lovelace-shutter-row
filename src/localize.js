@@ -27,13 +27,20 @@ function getLang(lang) {
  * @returns string
  */
 export function customLocalize(hass, keys) {
+    // Looks for keys in data
     let deepLookup = (keys, data) => {
         let curKey = keys.pop();
         if (!curKey in data) return false;
         if (keys.length == 0) return data[curKey];
         return deepLookup(keys, data[curKey]);
     };
-    let lang = hass.locale.language ?? DEFAULT_LANG;
+    // Gives the localized value in the given language
+    let localizeLang = (lang) => {
+        return deepLookup(keys.split(".").reverse(), getLang(lang));
+    };
 
-    return deepLookup(keys.split(".").reverse(), getLang(lang));
+    let lang = hass.locale.language ?? DEFAULT_LANG;
+    let localizedUserLang = localizeLang(lang);
+
+    return localizedUserLang ? localizedUserLang : localizeLang(DEFAULT_LANG);
 }

@@ -121,7 +121,7 @@ var __assign = (undefined && undefined.__assign) || function () {
     return MissingLocaleDataError;
 })(Error));
 
-var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function O(){return (O=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n]);}return e}).apply(this,arguments)}function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de$2=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)},be=function(e,t,r,n,i){var a;if(i&&r.double_tap_action?a=r.double_tap_action:n&&r.hold_action?a=r.hold_action:!n&&r.tap_action&&(a=r.tap_action),a||(a={action:"more-info"}),!a.confirmation||a.confirmation.exemptions&&a.confirmation.exemptions.some(function(e){return e.user===t.user.id})||confirm(a.confirmation.text||"Are you sure you want to "+a.action+"?"))switch(a.action){case"more-info":(a.entity||r.entity||r.camera_image)&&(ne(e,"hass-more-info",{entityId:a.entity?a.entity:r.entity?r.entity:r.camera_image}),a.haptic&&le(a.haptic));break;case"navigate":a.navigation_path&&(de$2(0,a.navigation_path),a.haptic&&le(a.haptic));break;case"url":a.url_path&&window.open(a.url_path),a.haptic&&le(a.haptic);break;case"toggle":r.entity&&(ge(t,r.entity),a.haptic&&le(a.haptic));break;case"call-service":if(!a.service)return;var o=a.service.split(".",2),u=o[0],c=o[1],m=O({},a.service_data);"entity"===m.entity_id&&(m.entity_id=r.entity),t.callService(u,c,m,a.target),a.haptic&&le(a.haptic);break;case"fire-dom-event":ne(e,"ll-custom",a),a.haptic&&le(a.haptic);}};
+var t,r;!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none";}(t||(t={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24";}(r||(r={}));function O(){return (O=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var r=arguments[t];for(var n in r)Object.prototype.hasOwnProperty.call(r,n)&&(e[n]=r[n]);}return e}).apply(this,arguments)}function E(e){return e.substr(0,e.indexOf("."))}var Z=["closed","locked","off"],ne=function(e,t,r,n){n=n||{},r=null==r?{}:r;var i=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return i.detail=r,e.dispatchEvent(i),i};var le=function(e){ne(window,"haptic",e);},de$2=function(e,t,r){void 0===r&&(r=!1),r?history.replaceState(null,"",t):history.pushState(null,"",t),ne(window,"location-changed",{replace:r});},fe=function(e,t,r){void 0===r&&(r=!0);var n,i=E(t),a="group"===i?"homeassistant":i;switch(i){case"lock":n=r?"unlock":"lock";break;case"cover":n=r?"open_cover":"close_cover";break;default:n=r?"turn_on":"turn_off";}return e.callService(a,n,{entity_id:t})},ge=function(e,t){var r=Z.includes(e.states[t].state);return fe(e,t,r)},be=function(e,t,r,n,i){var a;if(i&&r.double_tap_action?a=r.double_tap_action:n&&r.hold_action?a=r.hold_action:!n&&r.tap_action&&(a=r.tap_action),a||(a={action:"more-info"}),!a.confirmation||a.confirmation.exemptions&&a.confirmation.exemptions.some(function(e){return e.user===t.user.id})||confirm(a.confirmation.text||"Are you sure you want to "+a.action+"?"))switch(a.action){case"more-info":(a.entity||r.entity||r.camera_image)&&(ne(e,"hass-more-info",{entityId:a.entity?a.entity:r.entity?r.entity:r.camera_image}),a.haptic&&le(a.haptic));break;case"navigate":a.navigation_path&&(de$2(0,a.navigation_path),a.haptic&&le(a.haptic));break;case"url":a.url_path&&window.open(a.url_path),a.haptic&&le(a.haptic);break;case"toggle":r.entity&&(ge(t,r.entity),a.haptic&&le(a.haptic));break;case"call-service":if(!a.service)return;var o=a.service.split(".",2),u=o[0],c=o[1],m=O({},a.data);"entity"===m.entity_id&&(m.entity_id=r.entity),t.callService(u,c,m,a.target),a.haptic&&le(a.haptic);break;case"fire-dom-event":ne(e,"ll-custom",a),a.haptic&&le(a.haptic);}};
 
 // Material Design Icons v7.0.96
 var mdiArrowLeft = "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z";
@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.0";
+const VERSION = "0.3.1";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -153,6 +153,106 @@ const PATH_SHUTTER_UP =
     "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.86,12.5928l3.14,-3.13316l3.14,3.13316l0.96458,-0.96458l-4.10458,-4.10458l-4.10458,4.10458l0.96458,0.96458z";
 const PATH_SHUTTER_DOWN =
     "m3,4l18,0l0,4l-2,0l0,12l-2,0l0,-12l-10,0l0,12l-2,0l0,-12l-2,0l0,-4 m5.72989,8.28425l3.27011,3.27011l3.27011,-3.27011l1.00454,1.01167l-4.27465,4.27465l-4.27465,-4.27465l1.00454,-1.01167z";
+
+var editor$1 = {
+	invert_position: "Invert position value",
+	invert_position_label: "Invert open and closed status",
+	disable_position: "Hide position slider",
+	rtl_position: "Switch direction of the position slider",
+	group: "Group",
+	title_template: "Title template",
+	position_template: "Position label template",
+	move_down_button: "Move down button action",
+	move_stop_button: "Move stop button action",
+	move_up_button: "Move up button action",
+	preset_buttons: "Preset buttons",
+	move_left: "Move left",
+	move_right: "Move right",
+	move_up_button_expandable: "Move up button custom action",
+	move_stop_button_expandable: "Move stop button custom action",
+	move_down_button_expandable: "Move down button custom action"
+};
+var en = {
+	editor: editor$1
+};
+
+var en$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    editor: editor$1,
+    'default': en
+});
+
+var editor = {
+	invert_position: "Invertiere Positionswert",
+	invert_position_label: "Invertiere Positions Status",
+	disable_position: "Verstecke Positionslider",
+	rtl_position: "Vertausche Richtung des Positionslider",
+	group: "Gruppe",
+	title_template: "Titel template",
+	position_template: "Positionswert template",
+	move_down_button: "Runter Button Aktion",
+	move_stop_button: "Stopp Button Aktion",
+	move_up_button: "Hoch Button Aktion",
+	preset_buttons: "Voreinstellungs Buttons",
+	move_left: "Verschiebe nach links",
+	move_right: "Verschiebe nach rechts",
+	move_up_button_expandable: "Aufwärts Button benutzerdefinierte Aktion",
+	move_stop_button_expandable: "Stopp Button benutzerdefinierte Aktion",
+	move_down_button_expandable: "Abwärts Button benutzerdefinierte Aktion"
+};
+var de = {
+	editor: editor
+};
+
+var de$1 = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    editor: editor,
+    'default': de
+});
+
+const DEFAULT_LANG = "en";
+
+/**
+ * Returns custom localizations
+ * @param {string} lang
+ * @returns Array
+ */
+function getLang(lang) {
+    switch (lang) {
+        case "en":
+            return en$1;
+        case "de":
+            return de$1;
+
+        default:
+            return en$1;
+    }
+}
+
+/**
+ * Customized localization
+ * @param {hass} hass
+ * @param {string} keys
+ * @returns string
+ */
+function customLocalize(hass, keys) {
+    // Looks for keys in data
+    let deepLookup = (keys, data) => {
+        let curKey = keys.pop();
+        if (!curKey in data) return false;
+        if (keys.length == 0) return data[curKey];
+        return deepLookup(keys, data[curKey]);
+    };
+    // Gives the localized value in the given language
+    let localizeLang = (lang) => {
+        return deepLookup(keys.split(".").reverse(), getLang(lang));
+    };
+
+    let lang = hass.locale.language ?? DEFAULT_LANG;
+    let localizedUserLang = localizeLang(lang);
+
+    return localizedUserLang ? localizedUserLang : localizeLang(DEFAULT_LANG);
+}
 
 /**
  * Entities which are included
@@ -171,7 +271,7 @@ const UI_SCHEMA = [
 /**
  * Root form schema
  */
-const ROOT_SCHEMA = [
+const getRootSchema = (hass) => [
     {
         type: "grid",
         name: "",
@@ -195,18 +295,24 @@ const ROOT_SCHEMA = [
     { name: "title_template", selector: { template: {} } },
     { name: "position_template", selector: { template: {} } },
     {
-        type: "grid",
-        name: "move_down_button",
+        type: "expandable",
+        name: "move_up_button",
+        title: customLocalize(hass, "editor.move_up_button_expandable"),
+        icon: "mdi:arrow-up",
         schema: UI_SCHEMA,
     },
     {
-        type: "grid",
-        name: "move_down_button",
+        type: "expandable",
+        name: "move_stop_button",
+        title: customLocalize(hass, "editor.move_stop_button_expandable"),
+        icon: "mdi:stop-circle-outline",
         schema: UI_SCHEMA,
     },
     {
-        type: "grid",
+        type: "expandable",
         name: "move_down_button",
+        title: customLocalize(hass, "editor.move_down_button_expandable"),
+        icon: "mdi:arrow-down",
         schema: UI_SCHEMA,
     },
 ];
@@ -277,93 +383,6 @@ function moveElementInArray(arr, fromIndex, toIndex) {
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
     return arr;
-}
-
-var editor$1 = {
-	invert_position: "Invert position value",
-	invert_position_label: "Invert open and closed status",
-	disable_position: "Hide position slider",
-	rtl_position: "Switch direction of the position slider",
-	group: "Group",
-	title_template: "Title template",
-	position_template: "Position label template",
-	move_down_button: "Move down button action",
-	move_stop_button: "Move stop button action",
-	move_up_button: "Move up button action",
-	preset_buttons: "Preset buttons",
-	move_left: "Move left",
-	move_right: "Move right"
-};
-var en = {
-	editor: editor$1
-};
-
-var en$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    editor: editor$1,
-    'default': en
-});
-
-var editor = {
-	invert_position: "Invertiere Positionswert",
-	invert_position_label: "Invertiere Positions Status",
-	disable_position: "Verstecke Positionslider",
-	rtl_position: "Vertausche Richtung des Positionslider",
-	group: "Gruppe",
-	title_template: "Titel template",
-	position_template: "Positionswert template",
-	move_down_button: "Runter Button Aktion",
-	move_stop_button: "Stopp Button Aktion",
-	move_up_button: "Hoch Button Aktion",
-	preset_buttons: "Voreinstellungs Buttons",
-	move_left: "Verschiebe nach links",
-	move_right: "Verschiebe nach rechts"
-};
-var de = {
-	editor: editor
-};
-
-var de$1 = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    editor: editor,
-    'default': de
-});
-
-const DEFAULT_LANG = "en";
-
-/**
- * Returns custom localizations
- * @param {string} lang
- * @returns Array
- */
-function getLang(lang) {
-    switch (lang) {
-        case "en":
-            return en$1;
-        case "de":
-            return de$1;
-
-        default:
-            return en$1;
-    }
-}
-
-/**
- * Customized localization
- * @param {hass} hass
- * @param {string} keys
- * @returns string
- */
-function customLocalize(hass, keys) {
-    let deepLookup = (keys, data) => {
-        let curKey = keys.pop();
-        if (!curKey in data) return false;
-        if (keys.length == 0) return data[curKey];
-        return deepLookup(keys, data[curKey]);
-    };
-    let lang = hass.locale.language ?? DEFAULT_LANG;
-
-    return deepLookup(keys.split(".").reverse(), getLang(lang));
 }
 
 function styleInject(css, ref) {
@@ -602,7 +621,7 @@ class ShutterRowEditor extends s {
             <ha-form
                 .hass=${this.hass}
                 .data=${this._config}
-                .schema=${ROOT_SCHEMA}
+                .schema=${getRootSchema(this.hass)}
                 .computeLabel=${this._computeLabel}
                 @value-changed=${this._valueChanged}
             ></ha-form>
@@ -839,13 +858,16 @@ class ShutterRow extends s {
 
     /**
      * Calls custom action if defined
-     * @param {String} config
+     * @param {Array} config
      * @param {action} action
      * @returns
      */
     callCustomAction(config, action) {
         // Check if defined
         if (!config[action]) return;
+
+        // Deep copy
+        config = JSON.parse(JSON.stringify(config));
 
         // Run custom action
         // Run function action = "set-position"
@@ -854,6 +876,9 @@ class ShutterRow extends s {
                 entity_id: this.entityId,
                 position: this.config.invert_position ? 100 - config[action]["position"] : config[action]["position"],
             });
+
+        // Add legacy service data support, removed in later versions
+        if ("service_data" in config[action]) config[action]["data"] = config[action]["service_data"];
 
         // Call HA handle function
         switch (action) {

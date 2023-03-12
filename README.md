@@ -45,7 +45,7 @@ preset_buttons:
       tap_action:
           action: call-service
           service: cover.set_cover_position
-          service_data:
+          data:
               entity_id: cover.cover_entity
               position: 100
 ```

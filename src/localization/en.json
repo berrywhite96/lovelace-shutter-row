@@ -12,6 +12,9 @@
         "move_up_button": "Move up button action",
         "preset_buttons": "Preset buttons",
         "move_left": "Move left",
-        "move_right": "Move right"
+        "move_right": "Move right",
+        "move_up_button_expandable": "Move up button custom action",
+        "move_stop_button_expandable": "Move stop button custom action",
+        "move_down_button_expandable": "Move down button custom action"
     }
 }

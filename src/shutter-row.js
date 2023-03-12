@@ -124,13 +124,16 @@ class ShutterRow extends LitElement {
 
     /**
      * Calls custom action if defined
-     * @param {String} config
+     * @param {Array} config
      * @param {action} action
      * @returns
      */
     callCustomAction(config, action) {
         // Check if defined
         if (!config[action]) return;
+
+        // Deep copy
+        config = JSON.parse(JSON.stringify(config));
 
         // Run custom action
         // Run function action = "set-position"
@@ -139,6 +142,9 @@ class ShutterRow extends LitElement {
                 entity_id: this.entityId,
                 position: this.config.invert_position ? 100 - config[action]["position"] : config[action]["position"],
             });
+
+        // Add legacy service data support, removed in later versions
+        if ("service_data" in config[action]) config[action]["data"] = config[action]["service_data"];
 
         // Call HA handle function
         switch (action) {
