@@ -69,5 +69,4 @@ export const getRootSchema = (hass) => [
 export const PRESET_SCHEMA = [
     { name: "name", selector: { text: {} } },
     { name: "icon", selector: { icon: {} } },
-    UI_SCHEMA,
-];
+].concat(UI_SCHEMA);

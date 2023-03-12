@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.1";
+const VERSION = "0.3.2";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -323,8 +323,7 @@ const getRootSchema = (hass) => [
 const PRESET_SCHEMA = [
     { name: "name", selector: { text: {} } },
     { name: "icon", selector: { icon: {} } },
-    UI_SCHEMA,
-];
+].concat(UI_SCHEMA);
 
 /**
  * Hold needed helper variables
