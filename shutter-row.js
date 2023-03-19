@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.2";
+const VERSION = "0.3.3";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -687,36 +687,40 @@ ha-icon-button.active-icon {
     color: #fdd835 !important;
     color: var(--paper-item-icon-active-color, #fdd835) !important;
 }
+div.content {
+    cursor: pointer;
+}
 div.card-row {
     --card-row-height: 48px;
+    --ha-icon-height: 40px;
     display: flex;
     align-items: center;
     height: var(--card-row-height);
 }
-div.card-row.first-row ha-icon {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-}
-div.card-row.first-row ha-icon-button {
-    width: var(--card-row-height);
-    height: var(--card-row-height);
-    line-height: var(--card-row-height);
-}
 div.card-row.first-row ha-icon,
-div.card-row.first-row ha-icon-button {
+div.card-row.first-row ha-svg-icon-box {
     display: inline-block;
     text-align: center;
-    cursor: pointer;
-}
-div.entity-icon ha-icon {
     color: #44739e;
     color: var(--paper-item-icon-color, #44739e);
+    width: var(--ha-icon-height);
+    height: var(--ha-icon-height);
+    line-height: var(--ha-icon-height);
+    margin-right: 8px;
+}
+div.card-row.first-row ha-svg-icon-box {
+    flex: 0 0 var(--ha-icon-height);
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    background-size: cover;
+    vertical-align: middle;
+    box-sizing: border-box;
 }
 div.card-row.first-row span.entity-name {
-    margin-left: 16px;
+    margin-left: 8px;
     margin-right: 8px;
-    cursor: pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -728,11 +732,11 @@ div.card-row.first-row div.controls {
 }
 div.card-row.second-row ha-slider {
     width: 100%;
-    padding-left: var(--card-row-height);
+    margin-left: 42px;
     box-sizing: border-box;
 }
 div.card-row.second-row div.infos {
-    width: 175px;
+    width: 215px;
     text-align: right;
 }
 div.card-row.preset-buttons {
@@ -744,7 +748,6 @@ div.card-row.preset-buttons {
 div.card-row.preset-buttons div.button {
     position: relative;
     padding: 0.5em 0.75em;
-    cursor: pointer;
 }
 div.card-row.preset-buttons div.button span {
     margin-left: 0.25em;
@@ -994,19 +997,21 @@ class ShutterRow extends s {
      * @returns html
      */
     renderIcon() {
+        let getClassName = () => {
+            if (this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed")
+                return "active-icon";
+            return "";
+        };
+
         let getIconElementById = (icon) => {
-            return y`<ha-icon-button icon="${icon}" class="${
-                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
-                    ? "active-icon"
-                    : ""
-            }"></ha-icon>`;
+            return y`<ha-icon icon="${icon}" class="${getClassName()}"></ha-icon>`;
         };
         let getIconElementByPath = (path) => {
-            return y`<ha-icon-button path="${path}" class="${
-                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
-                    ? "active-icon"
-                    : ""
-            }"></ha-icon>`;
+            return y`
+                <ha-svg-icon-box>
+                    <ha-svg-icon path="${path}" class="${getClassName()}"></ha-icon-button>
+                </ha-svg-icon-box>
+            `;
         };
 
         // Check for moving
@@ -1015,7 +1020,6 @@ class ShutterRow extends s {
 
         // Check for entity defined icon
         if (this.state.attributes.icon != undefined) return getIconElementById(this.state.attributes.icon);
-        this.getPosition();
 
         // Use dynamic icon
         if (this.downReached()) return getIconElementByPath(PATH_SHUTTER_100);
@@ -1051,9 +1055,10 @@ class ShutterRow extends s {
             <div class="card-row first-row">
                 <div class="entity-icon">${this.renderIcon()}</div>
 
-                <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
+                <span class="entity-name" @click="${this.onMoreClick}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.open_cover")}
                         .path="${mdiChevronUp}"
                         .disabled=${moveUpDisabled()}
@@ -1063,6 +1068,7 @@ class ShutterRow extends s {
                     >
                     </ha-icon-button>
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
                         .path="${mdiStop}"
                         .disabled=${moveStopDisabled()}
@@ -1072,6 +1078,7 @@ class ShutterRow extends s {
                     >
                     </ha-icon-button>
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.close_cover")}
                         .path="${mdiChevronDown}"
                         .disabled=${moveDownDisabled()}
@@ -1093,6 +1100,7 @@ class ShutterRow extends s {
         return y`
             <div class="card-row second-row">
                 <ha-slider
+                    class="exclude-on-click"
                     ignore-bar-touch=""
                     min="0"
                     max="100"
@@ -1120,7 +1128,7 @@ class ShutterRow extends s {
         this.config.preset_buttons.forEach((presetConfig) => {
             presetsHtml.push(this.renderPreset(presetConfig));
         });
-        return y` <div class="card-row preset-buttons">${presetsHtml}</div> `;
+        return y`<div class="card-row preset-buttons">${presetsHtml}</div>`;
     }
 
     /**
@@ -1152,13 +1160,13 @@ class ShutterRow extends s {
 
         return y`
             <div
-                class="button"
+                class="button exclude-on-click"
                 @dblclick="${onDoubleClick}"
                 @pointerdown="${onPointerDownFunc}"
                 @pointerup="${onPointerUpFunc}"
             >
-                <ha-icon icon="${presetConfig.icon}"></ha-icon>
-                <span>${presetConfig.name}</span>
+                <ha-icon class="exclude-on-click" icon="${presetConfig.icon}"></ha-icon>
+                <span class="exclude-on-click">${presetConfig.name}</span>
                 ${ripple}
             </div>
         `;
@@ -1171,7 +1179,15 @@ class ShutterRow extends s {
     renderContent() {
         if (this.config.disable_position) return y` ${this.renderFirstRow()} ${this.renderPresetsRow()} `;
 
-        return y` ${this.renderFirstRow()} ${this.renderSecondRow()} ${this.renderPresetsRow()} `;
+        return y`${this.renderFirstRow()} ${this.renderSecondRow()} ${this.renderPresetsRow()}`;
+    }
+
+    /**
+     * Render card container with content
+     * @returns html
+     */
+    renderContainer() {
+        return y`<div class="content" @click="${this.onMoreClick}">${this.renderContent()}</div>`;
     }
 
     /**
@@ -1239,10 +1255,10 @@ class ShutterRow extends s {
         this.setMeta();
 
         // If card is part of group, root <ha-card> element is not needed
-        if (this.config.group) return this.renderContent();
+        if (this.config.group) return this.renderContainer();
 
         // Render card with <ha-card> element
-        return y` <ha-card> ${this.renderContent()} </ha-card> `;
+        return y`<ha-card>${this.renderContainer()}</ha-card>`;
     }
 
     /*
@@ -1362,7 +1378,10 @@ class ShutterRow extends s {
     /**
      * Open HA more info
      */
-    moreInfo() {
+    onMoreClick(event) {
+        // Exclude already binded elements
+        if (event.target.classList.contains("exclude-on-click")) return;
+
         let entityId = this.config.entity;
         ne(
             this,

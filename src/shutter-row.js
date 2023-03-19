@@ -261,19 +261,21 @@ class ShutterRow extends LitElement {
      * @returns html
      */
     renderIcon() {
+        let getClassName = () => {
+            if (this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed")
+                return "active-icon";
+            return "";
+        };
+
         let getIconElementById = (icon) => {
-            return html`<ha-icon-button icon="${icon}" class="${
-                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
-                    ? "active-icon"
-                    : ""
-            }"></ha-icon>`;
+            return html`<ha-icon icon="${icon}" class="${getClassName()}"></ha-icon>`;
         };
         let getIconElementByPath = (path) => {
-            return html`<ha-icon-button path="${path}" class="${
-                this.config.state_color != undefined && this.config.state_color && this.stateDisplay != "closed"
-                    ? "active-icon"
-                    : ""
-            }"></ha-icon>`;
+            return html`
+                <ha-svg-icon-box>
+                    <ha-svg-icon path="${path}" class="${getClassName()}"></ha-icon-button>
+                </ha-svg-icon-box>
+            `;
         };
 
         // Check for moving
@@ -282,7 +284,6 @@ class ShutterRow extends LitElement {
 
         // Check for entity defined icon
         if (this.state.attributes.icon != undefined) return getIconElementById(this.state.attributes.icon);
-        this.getPosition();
 
         // Use dynamic icon
         if (this.downReached()) return getIconElementByPath(PATH_SHUTTER_100);
@@ -318,9 +319,10 @@ class ShutterRow extends LitElement {
             <div class="card-row first-row">
                 <div class="entity-icon">${this.renderIcon()}</div>
 
-                <span class="entity-name" @click="${this.moreInfo}">${this.getName()}</span>
+                <span class="entity-name" @click="${this.onMoreClick}">${this.getName()}</span>
                 <div class="controls" state="${this.stateDisplay}">
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.open_cover")}
                         .path="${mdiChevronUp}"
                         .disabled=${moveUpDisabled()}
@@ -330,6 +332,7 @@ class ShutterRow extends LitElement {
                     >
                     </ha-icon-button>
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.stop_cover")}
                         .path="${mdiStop}"
                         .disabled=${moveStopDisabled()}
@@ -339,6 +342,7 @@ class ShutterRow extends LitElement {
                     >
                     </ha-icon-button>
                     <ha-icon-button
+                        class="exclude-on-click"
                         .label=${this.hass.localize("ui.dialogs.more_info_control.cover.close_cover")}
                         .path="${mdiChevronDown}"
                         .disabled=${moveDownDisabled()}
@@ -360,6 +364,7 @@ class ShutterRow extends LitElement {
         return html`
             <div class="card-row second-row">
                 <ha-slider
+                    class="exclude-on-click"
                     ignore-bar-touch=""
                     min="0"
                     max="100"
@@ -387,7 +392,7 @@ class ShutterRow extends LitElement {
         this.config.preset_buttons.forEach((presetConfig) => {
             presetsHtml.push(this.renderPreset(presetConfig));
         });
-        return html` <div class="card-row preset-buttons">${presetsHtml}</div> `;
+        return html`<div class="card-row preset-buttons">${presetsHtml}</div>`;
     }
 
     /**
@@ -419,13 +424,13 @@ class ShutterRow extends LitElement {
 
         return html`
             <div
-                class="button"
+                class="button exclude-on-click"
                 @dblclick="${onDoubleClick}"
                 @pointerdown="${onPointerDownFunc}"
                 @pointerup="${onPointerUpFunc}"
             >
-                <ha-icon icon="${presetConfig.icon}"></ha-icon>
-                <span>${presetConfig.name}</span>
+                <ha-icon class="exclude-on-click" icon="${presetConfig.icon}"></ha-icon>
+                <span class="exclude-on-click">${presetConfig.name}</span>
                 ${ripple}
             </div>
         `;
@@ -438,7 +443,15 @@ class ShutterRow extends LitElement {
     renderContent() {
         if (this.config.disable_position) return html` ${this.renderFirstRow()} ${this.renderPresetsRow()} `;
 
-        return html` ${this.renderFirstRow()} ${this.renderSecondRow()} ${this.renderPresetsRow()} `;
+        return html`${this.renderFirstRow()} ${this.renderSecondRow()} ${this.renderPresetsRow()}`;
+    }
+
+    /**
+     * Render card container with content
+     * @returns html
+     */
+    renderContainer() {
+        return html`<div class="content" @click="${this.onMoreClick}">${this.renderContent()}</div>`;
     }
 
     /**
@@ -506,10 +519,10 @@ class ShutterRow extends LitElement {
         this.setMeta();
 
         // If card is part of group, root <ha-card> element is not needed
-        if (this.config.group) return this.renderContent();
+        if (this.config.group) return this.renderContainer();
 
         // Render card with <ha-card> element
-        return html` <ha-card> ${this.renderContent()} </ha-card> `;
+        return html`<ha-card>${this.renderContainer()}</ha-card>`;
     }
 
     /*
@@ -629,7 +642,10 @@ class ShutterRow extends LitElement {
     /**
      * Open HA more info
      */
-    moreInfo() {
+    onMoreClick(event) {
+        // Exclude already binded elements
+        if (event.target.classList.contains("exclude-on-click")) return;
+
         let entityId = this.config.entity;
         fireEvent(
             this,

@@ -10,35 +10,39 @@ ha-icon.active-icon,
 ha-icon-button.active-icon {
     color: var(--paper-item-icon-active-color, #fdd835) !important;
 }
+div.content {
+    cursor: pointer;
+}
 div.card-row {
     --card-row-height: 48px;
+    --ha-icon-height: 40px;
     display: flex;
     align-items: center;
     height: var(--card-row-height);
 }
-div.card-row.first-row ha-icon {
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-}
-div.card-row.first-row ha-icon-button {
-    width: var(--card-row-height);
-    height: var(--card-row-height);
-    line-height: var(--card-row-height);
-}
 div.card-row.first-row ha-icon,
-div.card-row.first-row ha-icon-button {
+div.card-row.first-row ha-svg-icon-box {
     display: inline-block;
     text-align: center;
-    cursor: pointer;
-}
-div.entity-icon ha-icon {
     color: var(--paper-item-icon-color, #44739e);
+    width: var(--ha-icon-height);
+    height: var(--ha-icon-height);
+    line-height: var(--ha-icon-height);
+    margin-right: 8px;
+}
+div.card-row.first-row ha-svg-icon-box {
+    flex: 0 0 var(--ha-icon-height);
+    position: relative;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+    background-size: cover;
+    vertical-align: middle;
+    box-sizing: border-box;
 }
 div.card-row.first-row span.entity-name {
-    margin-left: 16px;
+    margin-left: 8px;
     margin-right: 8px;
-    cursor: pointer;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -50,11 +54,11 @@ div.card-row.first-row div.controls {
 }
 div.card-row.second-row ha-slider {
     width: 100%;
-    padding-left: var(--card-row-height);
+    margin-left: 42px;
     box-sizing: border-box;
 }
 div.card-row.second-row div.infos {
-    width: 175px;
+    width: 215px;
     text-align: right;
 }
 div.card-row.preset-buttons {
@@ -66,7 +70,6 @@ div.card-row.preset-buttons {
 div.card-row.preset-buttons div.button {
     position: relative;
     padding: 0.5em 0.75em;
-    cursor: pointer;
 }
 div.card-row.preset-buttons div.button span {
     margin-left: 0.25em;
