@@ -56,3 +56,15 @@ export function moveElementInArray(arr, fromIndex, toIndex) {
     arr.splice(toIndex, 0, element);
     return arr;
 }
+
+/**
+ * Localize entity state - HA 2023.4 < downgrade compatible
+ * @param {Hass} hass
+ * @param {string} state
+ * @returns
+ */
+export function localizeState(hass, state) {
+    let newLocalize = hass.localize(`component.cover.entity_component._.state.${state}`);
+    if (newLocalize != "") return newLocalize;
+    return hass.localize(`component.cover.state._.${state}`);
+}

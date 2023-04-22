@@ -16,7 +16,7 @@ import {
     PATH_SHUTTER_DOWN,
 } from "./const.js";
 import "./editor/editor.js";
-import { onHoldPointerDown, onPointerUp, getRippleElement } from "./helpers.js";
+import { onHoldPointerDown, onPointerUp, getRippleElement, localizeState } from "./helpers.js";
 import style from "./style.css";
 
 class ShutterRow extends LitElement {
@@ -199,12 +199,12 @@ class ShutterRow extends LitElement {
             (this.config.invert_position_label && this.getPosition() == 100) ||
             (!this.config.invert_position_label && this.getPosition() == 0)
         )
-            return this.hass.localize("component.cover.state._.closed");
+            return localizeState(this.hass, "closed");
         if (
             (this.config.invert_position_label && this.getPosition() == 0) ||
             (!this.config.invert_position_label && this.getPosition() == 100)
         )
-            return this.hass.localize("component.cover.state._.open");
+            return localizeState(this.hass, "open");
         return `${this.getPosition()} %`;
     }
 

@@ -2,7 +2,7 @@
 export const HASSIO_CARD_ID = "shutter-row";
 export const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 export const HASSIO_CARD_NAME = "Shutter Row";
-export const VERSION = "0.3.3";
+export const VERSION = "0.3.4";
 
 // SVG PATHS
 export const PATH_SHUTTER_100 =

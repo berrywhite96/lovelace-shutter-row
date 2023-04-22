@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.3";
+const VERSION = "0.3.4";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -382,6 +382,18 @@ function moveElementInArray(arr, fromIndex, toIndex) {
     arr.splice(fromIndex, 1);
     arr.splice(toIndex, 0, element);
     return arr;
+}
+
+/**
+ * Localize entity state - HA 2023.4 < downgrade compatible
+ * @param {Hass} hass
+ * @param {string} state
+ * @returns
+ */
+function localizeState(hass, state) {
+    let newLocalize = hass.localize(`component.cover.entity_component._.state.${state}`);
+    if (newLocalize != "") return newLocalize;
+    return hass.localize(`component.cover.state._.${state}`);
 }
 
 function styleInject(css, ref) {
@@ -935,12 +947,12 @@ class ShutterRow extends s {
             (this.config.invert_position_label && this.getPosition() == 100) ||
             (!this.config.invert_position_label && this.getPosition() == 0)
         )
-            return this.hass.localize("component.cover.state._.closed");
+            return localizeState(this.hass, "closed");
         if (
             (this.config.invert_position_label && this.getPosition() == 0) ||
             (!this.config.invert_position_label && this.getPosition() == 100)
         )
-            return this.hass.localize("component.cover.state._.open");
+            return localizeState(this.hass, "open");
         return `${this.getPosition()} %`;
     }
 
