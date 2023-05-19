@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.4";
+const VERSION = "0.3.5";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -695,9 +695,9 @@ ha-card {
     padding: 16px;
 }
 ha-icon.active-icon,
-ha-icon-button.active-icon {
-    color: #fdd835 !important;
-    color: var(--paper-item-icon-active-color, #fdd835) !important;
+ha-svg-icon.active-icon {
+    color: var(--state-active-color) !important;
+    color: var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))) !important;
 }
 div.content {
     cursor: pointer;

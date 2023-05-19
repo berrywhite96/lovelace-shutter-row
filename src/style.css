@@ -7,8 +7,8 @@ ha-card {
     padding: 16px;
 }
 ha-icon.active-icon,
-ha-icon-button.active-icon {
-    color: var(--paper-item-icon-active-color, #fdd835) !important;
+ha-svg-icon.active-icon {
+    color: var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))) !important;
 }
 div.content {
     cursor: pointer;
