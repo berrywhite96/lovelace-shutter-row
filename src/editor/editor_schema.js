@@ -36,6 +36,7 @@ export const getRootSchema = (hass) => [
             { name: "rtl_position", selector: { boolean: {} } },
             { name: "state_color", selector: { boolean: {} } },
             { name: "group", selector: { boolean: {} } },
+            { name: "ignore_state", selector: { boolean: {} } },
         ],
     },
     { name: "title_template", selector: { template: {} } },

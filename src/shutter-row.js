@@ -88,6 +88,7 @@ class ShutterRow extends LitElement {
             rtl_position: getConfigAttribute("rtl_position", false),
             state_color: getConfigAttribute("state_color", false),
             group: getConfigAttribute("group", false),
+            ignore_state: getConfigAttribute("ignore_state", false),
             title_template: getConfigAttribute("title_template", false),
             position_template: getConfigAttribute("position_template", false),
             move_down_button: {
@@ -301,16 +302,19 @@ class ShutterRow extends LitElement {
     renderFirstRow() {
         let moveUpDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.upReached() || this.currentMoving() == "up") return true;
             return false;
         };
         let moveStopDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.state.attributes.moving == "STOP") return true;
             return false;
         };
         let moveDownDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.downReached() || this.currentMoving() == "down") return true;
             return false;
         };
@@ -365,15 +369,15 @@ class ShutterRow extends LitElement {
             <div class="card-row second-row">
                 <ha-slider
                     class="exclude-on-click"
-                    ignore-bar-touch=""
                     min="0"
                     max="100"
                     value=${this.getPosition()}
                     step="5"
-                    pin
                     dir="${this.config.rtl_position ? "rtl" : "ltr"}"
-                    role="slider"
                     @change="${this.onSliderChange}"
+                    ignore-bar-touch
+                    pin
+                    labeled
                 ></ha-slider>
                 <div class="infos">
                     <span class="position">${this.getPositionLabel()}</span>
@@ -552,7 +556,7 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if (this.upReached()) return;
+            if (this.upReached() && !this.config.ignore_state) return;
             this.hass.callService("cover", "open_cover", {
                 entity_id: this.entityId,
             });
@@ -580,7 +584,7 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if (this.state.attributes.moving == "STOP") return;
+            if (this.state.attributes.moving == "STOP" && !this.config.ignore_state) return;
             this.hass.callService("cover", "stop_cover", {
                 entity_id: this.entityId,
             });
@@ -608,7 +612,7 @@ class ShutterRow extends LitElement {
                 return;
             }
             // Run default action
-            if (this.downReached()) return;
+            if (this.downReached() && !this.config.ignore_state) return;
             this.hass.callService("cover", "close_cover", {
                 entity_id: this.entityId,
             });

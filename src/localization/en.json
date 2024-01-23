@@ -5,6 +5,7 @@
         "disable_position": "Hide position slider",
         "rtl_position": "Switch direction of the position slider",
         "group": "Group",
+        "ignore_state": "Enable always move buttons",
         "title_template": "Title template",
         "position_template": "Position label template",
         "move_down_button": "Move down button action",

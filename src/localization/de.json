@@ -5,6 +5,7 @@
         "disable_position": "Verstecke Positionslider",
         "rtl_position": "Vertausche Richtung des Positionslider",
         "group": "Gruppe",
+        "ignore_state": "Aktiviere immer Bewegungsbuttons",
         "title_template": "Titel template",
         "position_template": "Positionswert template",
         "move_down_button": "Runter Button Aktion",

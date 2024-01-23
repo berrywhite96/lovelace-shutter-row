@@ -136,7 +136,7 @@ var mdiStop = "M18,18H6V6H18V18Z";
 const HASSIO_CARD_ID = "shutter-row";
 const HASSIO_CARD_EDITOR_ID = HASSIO_CARD_ID + "-editor";
 const HASSIO_CARD_NAME = "Shutter Row";
-const VERSION = "0.3.5";
+const VERSION = "0.3.6";
 
 // SVG PATHS
 const PATH_SHUTTER_100 =
@@ -160,6 +160,7 @@ var editor$1 = {
 	disable_position: "Hide position slider",
 	rtl_position: "Switch direction of the position slider",
 	group: "Group",
+	ignore_state: "Enable always move buttons",
 	title_template: "Title template",
 	position_template: "Position label template",
 	move_down_button: "Move down button action",
@@ -188,6 +189,7 @@ var editor = {
 	disable_position: "Verstecke Positionslider",
 	rtl_position: "Vertausche Richtung des Positionslider",
 	group: "Gruppe",
+	ignore_state: "Aktiviere immer Bewegungsbuttons",
 	title_template: "Titel template",
 	position_template: "Positionswert template",
 	move_down_button: "Runter Button Aktion",
@@ -290,6 +292,7 @@ const getRootSchema = (hass) => [
             { name: "rtl_position", selector: { boolean: {} } },
             { name: "state_color", selector: { boolean: {} } },
             { name: "group", selector: { boolean: {} } },
+            { name: "ignore_state", selector: { boolean: {} } },
         ],
     },
     { name: "title_template", selector: { template: {} } },
@@ -836,6 +839,7 @@ class ShutterRow extends s {
             rtl_position: getConfigAttribute("rtl_position", false),
             state_color: getConfigAttribute("state_color", false),
             group: getConfigAttribute("group", false),
+            ignore_state: getConfigAttribute("ignore_state", false),
             title_template: getConfigAttribute("title_template", false),
             position_template: getConfigAttribute("position_template", false),
             move_down_button: {
@@ -1049,16 +1053,19 @@ class ShutterRow extends s {
     renderFirstRow() {
         let moveUpDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.upReached() || this.currentMoving() == "up") return true;
             return false;
         };
         let moveStopDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.state.attributes.moving == "STOP") return true;
             return false;
         };
         let moveDownDisabled = () => {
             if (this.stateDisplay == "unavailable") return true;
+            if (this.config.ignore_state) return false;
             if (this.downReached() || this.currentMoving() == "down") return true;
             return false;
         };
@@ -1113,15 +1120,15 @@ class ShutterRow extends s {
             <div class="card-row second-row">
                 <ha-slider
                     class="exclude-on-click"
-                    ignore-bar-touch=""
                     min="0"
                     max="100"
                     value=${this.getPosition()}
                     step="5"
-                    pin
                     dir="${this.config.rtl_position ? "rtl" : "ltr"}"
-                    role="slider"
                     @change="${this.onSliderChange}"
+                    ignore-bar-touch
+                    pin
+                    labeled
                 ></ha-slider>
                 <div class="infos">
                     <span class="position">${this.getPositionLabel()}</span>
@@ -1300,7 +1307,7 @@ class ShutterRow extends s {
                 return;
             }
             // Run default action
-            if (this.upReached()) return;
+            if (this.upReached() && !this.config.ignore_state) return;
             this.hass.callService("cover", "open_cover", {
                 entity_id: this.entityId,
             });
@@ -1328,7 +1335,7 @@ class ShutterRow extends s {
                 return;
             }
             // Run default action
-            if (this.state.attributes.moving == "STOP") return;
+            if (this.state.attributes.moving == "STOP" && !this.config.ignore_state) return;
             this.hass.callService("cover", "stop_cover", {
                 entity_id: this.entityId,
             });
@@ -1356,7 +1363,7 @@ class ShutterRow extends s {
                 return;
             }
             // Run default action
-            if (this.downReached()) return;
+            if (this.downReached() && !this.config.ignore_state) return;
             this.hass.callService("cover", "close_cover", {
                 entity_id: this.entityId,
             });
