@@ -31,7 +31,7 @@ Go to the `Frontend` section and search for `Shutter Row`.
 
 ### YAML mode
 
-Card example with inverted slider position, state color and one preset button.
+Card example with inverted slider position, state color and three preset buttons.
 
 ```yaml
 type: "custom:shutter-row"
@@ -48,6 +48,22 @@ preset_buttons:
           data:
               entity_id: cover.cover_entity
               position: 100
+    - name: 50%
+      icon: mdi:fraction-one-half
+      tap_action:
+          action: call-service
+          service: cover.set_cover_position
+          data:
+              entity_id: cover.cover_entity
+              position: 50
+    - name: Close
+      icon: mdi:window-shutter
+      tap_action:
+          action: call-service
+          service: cover.set_cover_position
+          data:
+              entity_id: cover.cover_entity
+              position: 0
 ```
 
 #### Main configuration
