@@ -2,6 +2,10 @@
 
 Simple shutter card with preset buttons and button customization for Home Assistant.
 
+## **WARNING: This card is no longer developed**
+
+This card will be no longer supported. Currently, it works with the example YAML below, but this is not guaranteed for future Home Assistant updates. As newer, prettier and more feature rich cards exist, this card makes also no sense anymore. Use the beautiful [Bubble Card](https://github.com/Clooos/Bubble-Card) or [Mushroom](https://github.com/piitaya/lovelace-mushroom).
+
 <img width="496" alt="Shutter row card example" src="https://user-images.githubusercontent.com/24818127/192158290-8d833fa2-912d-4232-996a-ef4ff99f660c.png">
 
 ## Install
